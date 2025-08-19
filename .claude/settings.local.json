@@ -19,7 +19,9 @@
       "Bash(python3 -m pytest:*)",
       "WebFetch(domain:*)",
       "Bash(gh issue view:*)",
-      "WebFetch(domain:docs.anthropic.com)"
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(claude-code:*)",
+      "Bash(npm install)"
     ],
     "deny": []
   }
