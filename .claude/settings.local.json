@@ -21,7 +21,10 @@
       "Bash(gh issue view:*)",
       "WebFetch(domain:docs.anthropic.com)",
       "Bash(claude-code:*)",
-      "Bash(npm install)"
+      "Bash(npm install)",
+      "Bash(docker-compose:*)",
+      "Bash(docker logs:*)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }

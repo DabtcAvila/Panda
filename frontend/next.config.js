@@ -143,7 +143,7 @@ const nextConfig = {
   i18n: {
     locales: ['es', 'en'],
     defaultLocale: 'es',
-    localeDetection: true,
+    localeDetection: false,
   },
   
   // Output standalone para Docker

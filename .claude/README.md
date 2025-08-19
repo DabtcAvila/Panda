@@ -48,7 +48,7 @@ Este documento define cómo interactuamos TÚ y YO en todas las conversaciones d
 ## 🛠️ Principios de Código
 
 ### Estructura y Modularidad
-- **Archivos pequeños**: Máximo 300 líneas por archivo
+- **Archivos pequeños**: Máximo 500 líneas por archivo
 - **Funciones simples**: Una sola responsabilidad, máximo 50 líneas
 - **Componentes reutilizables**: Diseñar para reusar, no duplicar
 - **Separación clara**: Frontend/Backend/Config completamente separados
