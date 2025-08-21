@@ -9,6 +9,21 @@ export const metadata: Metadata = {
   description: 'Transformamos empresas con soluciones de Inteligencia Artificial de vanguardia',
   keywords: 'IA, Inteligencia Artificial, Machine Learning, Deep Learning, Consultoría, Tecnología',
   authors: [{ name: 'Panda Technologies' }],
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      { rel: 'mask-icon', url: '/favicon.svg', color: '#000000' },
+    ],
+  },
+  manifest: '/manifest.json',
   openGraph: {
     title: 'Panda Technologies',
     description: 'Soluciones Corporativas de Inteligencia Artificial',

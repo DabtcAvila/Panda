@@ -25,7 +25,11 @@
       "Bash(docker-compose:*)",
       "Bash(docker logs:*)",
       "Bash(curl:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(node:*)",
+      "Bash(rm:*)",
+      "Bash(true)",
+      "Bash(pkill:*)"
     ],
     "deny": []
   }
