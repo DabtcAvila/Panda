@@ -24,7 +24,8 @@
       "Bash(npm install)",
       "Bash(docker-compose:*)",
       "Bash(docker logs:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm install:*)"
     ],
     "deny": []
   }

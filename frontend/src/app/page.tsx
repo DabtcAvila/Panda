@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/react/24/outline';
 
 export default function HomePage() {
   const fadeIn = {
@@ -28,24 +29,16 @@ export default function HomePage() {
                 Panda Technologies
               </span>
             </div>
-            <div className="hidden md:block">
-              <div className="flex items-center space-x-8">
-                <button className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900">
-                  Productos
-                </button>
-                <button className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900">
-                  Soluciones
-                </button>
-                <button className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900">
-                  Recursos
-                </button>
-                <button className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900">
-                  Empresa
-                </button>
-                <button className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900">
-                  Contacto
-                </button>
-              </div>
+            <div className="flex items-center space-x-4">
+              <button className="rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
+                Get Started
+              </button>
+              <button className="text-gray-600 transition-colors hover:text-gray-900">
+                <MagnifyingGlassIcon className="h-5 w-5" />
+              </button>
+              <button className="text-gray-600 transition-colors hover:text-gray-900">
+                <Bars3Icon className="h-5 w-5" />
+              </button>
             </div>
           </div>
         </div>
