@@ -39,7 +39,7 @@ export default function HomePage() {
                 <circle 
                   cx="50" 
                   cy="50" 
-                  r="29" 
+                  r="27.5" 
                   className="fill-gray-900"
                 />
               </svg>
