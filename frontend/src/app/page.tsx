@@ -48,7 +48,7 @@ export default function HomePage() {
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
+              <button className="rounded-full border border-gray-300 px-8 py-2.5 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
                 Get Started
               </button>
               <button className="text-gray-600 transition-colors hover:text-gray-900">
