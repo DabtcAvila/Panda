@@ -25,6 +25,24 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 100 100" 
+                className="h-6 w-6 mr-2"
+                aria-label="Panda Technologies Logo"
+              >
+                <path 
+                  d="M 0,0 L 100,0 L 100,100 L 0,100 L 0,0 Z M 8,8 L 8,92 L 92,92 L 92,8 L 8,8 Z" 
+                  className="fill-gray-900" 
+                  fillRule="evenodd"
+                />
+                <circle 
+                  cx="50" 
+                  cy="50" 
+                  r="21" 
+                  className="fill-gray-900"
+                />
+              </svg>
               <span className="text-xl font-semibold tracking-tight text-gray-900">
                 Panda Technologies
               </span>
