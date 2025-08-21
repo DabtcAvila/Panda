@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline';
 
 export default function HomePage() {
   const fadeIn = {
@@ -99,6 +99,24 @@ export default function HomePage() {
                 Solicitar Demo
               </button>
             </motion.div>
+          </motion.div>
+
+          {/* Scroll Indicator */}
+          <motion.div
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center"
+            animate={{
+              y: [0, 8, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <ChevronDownIcon className="h-5 w-5 text-gray-600 mb-1" />
+            <span className="text-xs text-gray-600 font-medium tracking-wide">
+              Scroll to Explore
+            </span>
           </motion.div>
         </div>
       </section>
