@@ -102,22 +102,26 @@ export default function HomePage() {
           </motion.div>
 
           {/* Scroll Indicator */}
-          <motion.div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center"
-            animate={{
-              y: [0, 8, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <ChevronDownIcon className="h-5 w-5 text-gray-600 mb-1" />
-            <span className="text-xs text-gray-600 font-medium tracking-wide">
-              Scroll to Explore
-            </span>
-          </motion.div>
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center">
+            <motion.div
+              className="flex flex-col items-center"
+              animate={{
+                y: [0, 8, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <div className="flex items-center justify-center mb-1">
+                <ChevronDownIcon className="h-5 w-5 text-gray-600" />
+              </div>
+              <span className="text-xs text-gray-600 font-medium tracking-wide">
+                Scroll to Explore
+              </span>
+            </motion.div>
+          </div>
         </div>
       </section>
 
