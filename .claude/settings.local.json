@@ -29,7 +29,11 @@
       "Bash(node:*)",
       "Bash(rm:*)",
       "Bash(true)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(cd:*)",
+      "Bash(npm run dev:*)",
+      "Bash(wget:*)",
+      "Bash(say:*)"
     ],
     "deny": []
   }
