@@ -45,7 +45,7 @@ export default function HomePage() {
                   className="fill-gray-900"
                 />
               </svg>
-              <span className="text-2xl font-semibold tracking-tight text-gray-900">
+              <span className="text-2xl font-sans font-semibold tracking-tight text-gray-900">
                 {messages.navbar.company}
               </span>
             </div>
@@ -82,15 +82,15 @@ export default function HomePage() {
             variants={staggerChildren}
           >
             <motion.h1
-              className="text-5xl font-light tracking-tight text-gray-900 sm:text-6xl lg:text-7xl"
+              className="text-5xl font-mono font-light tracking-wider text-gray-900 sm:text-6xl lg:text-7xl"
               variants={fadeIn}
             >
               {messages.hero.title}
-              <span className="block font-normal">{messages.hero.titleHighlight}</span>
+              <span className="block font-mono font-normal tracking-wider">{messages.hero.titleHighlight}</span>
             </motion.h1>
             
             <motion.p
-              className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-gray-600"
+              className="mx-auto mt-8 max-w-2xl text-lg font-sans leading-relaxed text-gray-600"
               variants={fadeIn}
             >
               {messages.hero.description}
@@ -126,7 +126,7 @@ export default function HomePage() {
               <div className="flex items-center justify-center mb-1">
                 <ChevronDownIcon className="h-5 w-5 text-gray-600" />
               </div>
-              <span className="text-xs text-gray-600 font-medium tracking-wide">
+              <span className="text-xs text-gray-600 font-sans font-medium tracking-wide">
                 Scroll to Explore
               </span>
             </motion.div>
@@ -144,10 +144,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-light tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-3xl font-mono font-light tracking-wider text-gray-900 sm:text-4xl">
               {messages.services.title}
             </h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <p className="mt-4 text-lg font-sans text-gray-600">
               {messages.services.subtitle}
             </p>
           </motion.div>
@@ -164,10 +164,10 @@ export default function HomePage() {
               variants={fadeIn}
             >
               <div className="mb-4 h-px w-12 bg-gray-900" />
-              <h3 className="text-lg font-medium text-gray-900">
+              <h3 className="text-lg font-mono font-medium tracking-wider text-gray-900">
                 {messages.services.aiDecisions.title}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-gray-600">
+              <p className="mt-4 text-sm font-sans leading-relaxed text-gray-600">
                 {messages.services.aiDecisions.description}
               </p>
               <button className="mt-6 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
@@ -180,10 +180,10 @@ export default function HomePage() {
               variants={fadeIn}
             >
               <div className="mb-4 h-px w-12 bg-gray-900" />
-              <h3 className="text-lg font-medium text-gray-900">
+              <h3 className="text-lg font-mono font-medium tracking-wider text-gray-900">
                 {messages.services.automation.title}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-gray-600">
+              <p className="mt-4 text-sm font-sans leading-relaxed text-gray-600">
                 {messages.services.automation.description}
               </p>
               <button className="mt-6 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
@@ -196,10 +196,10 @@ export default function HomePage() {
               variants={fadeIn}
             >
               <div className="mb-4 h-px w-12 bg-gray-900" />
-              <h3 className="text-lg font-medium text-gray-900">
+              <h3 className="text-lg font-mono font-medium tracking-wider text-gray-900">
                 {messages.services.predictive.title}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-gray-600">
+              <p className="mt-4 text-sm font-sans leading-relaxed text-gray-600">
                 {messages.services.predictive.description}
               </p>
               <button className="mt-6 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
@@ -219,7 +219,7 @@ export default function HomePage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl font-light tracking-tight text-gray-900">
+          <h2 className="text-3xl font-mono font-light tracking-wider text-gray-900">
             {messages.cta.title}
           </h2>
           <p className="mt-4 text-lg text-gray-600">
@@ -236,10 +236,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <div className="flex flex-col items-center sm:items-start">
-              <span className="text-lg font-semibold text-gray-900">
+              <span className="text-lg font-sans font-semibold text-gray-900">
                 {messages.footer.company}
               </span>
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-2 text-sm font-sans text-gray-600">
                 {messages.footer.rights}
               </p>
             </div>
