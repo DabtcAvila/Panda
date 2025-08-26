@@ -25,8 +25,8 @@ export default function HomePage() {
       {/* Navbar */}
       <nav className="fixed top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex h-[70px] items-center justify-between">
-            <div className="flex items-center">
+          <div className="flex h-[70px] items-center">
+            <div className="flex items-center flex-1">
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox="0 0 100 100" 
@@ -50,7 +50,7 @@ export default function HomePage() {
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="rounded-lg border border-gray-300 px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
+              <button className="rounded-lg border border-gray-300 px-16 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
                 Get Started
               </button>
               <button 
