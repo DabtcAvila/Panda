@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "company": "Panda Technologies"
+  },
+  "hero": {
+    "title": "Enterprise AI Software from the Future.",
+    "titleHighlight": "Delivered Today.™",
+    "description": "We build software that enables organizations to effectively integrate their data, decisions, and operations with Artificial Intelligence.",
+    "exploreButton": "Explore Solutions",
+    "demoButton": "Request Demo"
+  },
+  "services": {
+    "title": "Core Capabilities",
+    "subtitle": "Advanced technology designed to drive tangible business results",
+    "aiDecisions": {
+      "title": "AI for Decisions",
+      "description": "Deep learning algorithms that analyze complex patterns to provide actionable insights and strategic recommendations in real-time."
+    },
+    "automation": {
+      "title": "Intelligent Automation",
+      "description": "Autonomous systems that optimize workflows, reduce operational errors, and free up human resources for higher strategic value tasks."
+    },
+    "predictive": {
+      "title": "Predictive Analytics",
+      "description": "Advanced statistical models that anticipate market trends, customer behavior, and growth opportunities with exceptional precision."
+    },
+    "learnMore": "Learn more →"
+  },
+  "cta": {
+    "title": "Start your digital transformation",
+    "subtitle": "Join leading companies that trust our technology",
+    "button": "Schedule Consultation"
+  },
+  "footer": {
+    "company": "Panda Technologies",
+    "rights": "© 2024 Panda Technologies. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies"
+  }
+}

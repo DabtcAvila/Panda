@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -64,7 +65,9 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={inter.className}>
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

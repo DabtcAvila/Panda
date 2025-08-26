@@ -2,8 +2,10 @@
 
 import { motion } from 'framer-motion';
 import { MagnifyingGlassIcon, Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function HomePage() {
+  const { locale, messages, changeLocale } = useLanguage();
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -23,12 +25,12 @@ export default function HomePage() {
       {/* Navbar */}
       <nav className="fixed top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
+          <div className="flex h-[70px] items-center justify-between">
             <div className="flex items-center">
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox="0 0 100 100" 
-                className="h-6 w-6 mr-2"
+                className="h-7 w-7 mr-2"
                 aria-label="Panda Technologies Logo"
               >
                 <path 
@@ -43,19 +45,27 @@ export default function HomePage() {
                   className="fill-gray-900"
                 />
               </svg>
-              <span className="text-xl font-semibold tracking-tight text-gray-900">
-                Panda Technologies
+              <span className="text-2xl font-semibold tracking-tight text-gray-900">
+                {messages.navbar.company}
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="rounded-full border border-gray-300 px-8 py-2.5 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
+              <button className="rounded-full border border-gray-300 px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
                 Get Started
               </button>
-              <button className="text-gray-600 transition-colors hover:text-gray-900">
-                <MagnifyingGlassIcon className="h-5 w-5" />
+              <button 
+                onClick={() => changeLocale(locale === 'es' ? 'en' : 'es')}
+                className="flex items-center rounded-full border border-gray-300 px-6 py-2.5 text-sm font-medium text-gray-900 transition-all hover:border-gray-900"
+              >
+                <span className={`${locale === 'es' ? 'font-semibold' : ''}`}>ES</span>
+                <span className="mx-1.5 text-gray-400">|</span>
+                <span className={`${locale === 'en' ? 'font-semibold' : ''}`}>EN</span>
               </button>
               <button className="text-gray-600 transition-colors hover:text-gray-900">
-                <Bars3Icon className="h-5 w-5" />
+                <MagnifyingGlassIcon className="h-6 w-6" />
+              </button>
+              <button className="text-gray-600 transition-colors hover:text-gray-900">
+                <Bars3Icon className="h-6 w-6" />
               </button>
             </div>
           </div>
@@ -75,16 +85,15 @@ export default function HomePage() {
               className="text-5xl font-light tracking-tight text-gray-900 sm:text-6xl lg:text-7xl"
               variants={fadeIn}
             >
-              Software de IA Empresarial del Futuro.
-              <span className="block font-normal">Entregado Hoy.™</span>
+              {messages.hero.title}
+              <span className="block font-normal">{messages.hero.titleHighlight}</span>
             </motion.h1>
             
             <motion.p
               className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-gray-600"
               variants={fadeIn}
             >
-              Construimos software que permite a las organizaciones integrar efectivamente 
-              sus datos, decisiones y operaciones con Inteligencia Artificial.
+              {messages.hero.description}
             </motion.p>
 
             <motion.div
@@ -92,11 +101,11 @@ export default function HomePage() {
               variants={fadeIn}
             >
               <button className="group relative overflow-hidden rounded-full border border-gray-900 px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:text-white">
-                <span className="relative z-10">Explorar Soluciones</span>
+                <span className="relative z-10">{messages.hero.exploreButton}</span>
                 <div className="absolute inset-0 -z-10 bg-gray-900 transition-transform duration-300 ease-out scale-x-0 group-hover:scale-x-100 origin-left" />
               </button>
               <button className="rounded-full border border-gray-300 px-8 py-3 text-sm font-medium text-gray-600 transition-all hover:border-gray-900 hover:text-gray-900">
-                Solicitar Demo
+                {messages.hero.demoButton}
               </button>
             </motion.div>
           </motion.div>
@@ -136,10 +145,10 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl font-light tracking-tight text-gray-900 sm:text-4xl">
-              Capacidades Core
+              {messages.services.title}
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              Tecnología avanzada diseñada para impulsar resultados empresariales tangibles
+              {messages.services.subtitle}
             </p>
           </motion.div>
 
@@ -156,15 +165,13 @@ export default function HomePage() {
             >
               <div className="mb-4 h-px w-12 bg-gray-900" />
               <h3 className="text-lg font-medium text-gray-900">
-                IA para Decisiones
+                {messages.services.aiDecisions.title}
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-gray-600">
-                Algoritmos de aprendizaje profundo que analizan patrones complejos 
-                para proporcionar insights accionables y recomendaciones estratégicas 
-                en tiempo real.
+                {messages.services.aiDecisions.description}
               </p>
               <button className="mt-6 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
-                Aprender más →
+                {messages.services.learnMore}
               </button>
             </motion.div>
 
@@ -174,15 +181,13 @@ export default function HomePage() {
             >
               <div className="mb-4 h-px w-12 bg-gray-900" />
               <h3 className="text-lg font-medium text-gray-900">
-                Automatización Inteligente
+                {messages.services.automation.title}
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-gray-600">
-                Sistemas autónomos que optimizan flujos de trabajo, reducen errores 
-                operativos y liberan recursos humanos para tareas de mayor valor 
-                estratégico.
+                {messages.services.automation.description}
               </p>
               <button className="mt-6 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
-                Aprender más →
+                {messages.services.learnMore}
               </button>
             </motion.div>
 
@@ -192,15 +197,13 @@ export default function HomePage() {
             >
               <div className="mb-4 h-px w-12 bg-gray-900" />
               <h3 className="text-lg font-medium text-gray-900">
-                Análisis Predictivo
+                {messages.services.predictive.title}
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-gray-600">
-                Modelos estadísticos avanzados que anticipan tendencias del mercado, 
-                comportamiento del cliente y oportunidades de crecimiento con precisión 
-                excepcional.
+                {messages.services.predictive.description}
               </p>
               <button className="mt-6 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
-                Aprender más →
+                {messages.services.learnMore}
               </button>
             </motion.div>
           </motion.div>
@@ -217,13 +220,13 @@ export default function HomePage() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl font-light tracking-tight text-gray-900">
-            Comienza tu transformación digital
+            {messages.cta.title}
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Únete a las empresas líderes que confían en nuestra tecnología
+            {messages.cta.subtitle}
           </p>
           <button className="mt-8 rounded-full bg-gray-900 px-8 py-3 text-sm font-medium text-white transition-all hover:bg-gray-800">
-            Programar Consulta
+            {messages.cta.button}
           </button>
         </motion.div>
       </section>
@@ -234,21 +237,21 @@ export default function HomePage() {
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <div className="flex flex-col items-center sm:items-start">
               <span className="text-lg font-semibold text-gray-900">
-                Panda Technologies
+                {messages.footer.company}
               </span>
               <p className="mt-2 text-sm text-gray-600">
-                © 2024 Panda Technologies. Todos los derechos reservados.
+                {messages.footer.rights}
               </p>
             </div>
             <div className="flex space-x-6">
               <button className="text-sm text-gray-600 hover:text-gray-900">
-                Privacidad
+                {messages.footer.privacy}
               </button>
               <button className="text-sm text-gray-600 hover:text-gray-900">
-                Términos
+                {messages.footer.terms}
               </button>
               <button className="text-sm text-gray-600 hover:text-gray-900">
-                Cookies
+                {messages.footer.cookies}
               </button>
             </div>
           </div>
