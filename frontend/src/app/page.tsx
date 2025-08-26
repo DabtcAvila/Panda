@@ -50,12 +50,12 @@ export default function HomePage() {
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="rounded-full border border-gray-300 px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
+              <button className="rounded-lg border border-gray-300 px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
                 Get Started
               </button>
               <button 
                 onClick={() => changeLocale(locale === 'es' ? 'en' : 'es')}
-                className="flex items-center rounded-full border border-gray-300 px-6 py-2.5 text-sm font-medium text-gray-900 transition-all hover:border-gray-900"
+                className="flex items-center rounded-lg border border-gray-300 px-6 py-2.5 text-sm font-medium text-gray-900 transition-all hover:border-gray-900"
               >
                 <span className={`${locale === 'es' ? 'font-semibold' : ''}`}>ES</span>
                 <span className="mx-1.5 text-gray-400">|</span>
@@ -100,11 +100,11 @@ export default function HomePage() {
               className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
               variants={fadeIn}
             >
-              <button className="group relative overflow-hidden rounded-full border border-gray-900 px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:text-white">
+              <button className="group relative overflow-hidden rounded-lg border border-gray-900 px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:text-white">
                 <span className="relative z-10">{messages.hero.exploreButton}</span>
                 <div className="absolute inset-0 -z-10 bg-gray-900 transition-transform duration-300 ease-out scale-x-0 group-hover:scale-x-100 origin-left" />
               </button>
-              <button className="rounded-full border border-gray-300 px-8 py-3 text-sm font-medium text-gray-600 transition-all hover:border-gray-900 hover:text-gray-900">
+              <button className="rounded-lg border border-gray-300 px-8 py-3 text-sm font-medium text-gray-600 transition-all hover:border-gray-900 hover:text-gray-900">
                 {messages.hero.demoButton}
               </button>
             </motion.div>
@@ -225,7 +225,7 @@ export default function HomePage() {
           <p className="mt-4 text-lg text-gray-600">
             {messages.cta.subtitle}
           </p>
-          <button className="mt-8 rounded-full bg-gray-900 px-8 py-3 text-sm font-medium text-white transition-all hover:bg-gray-800">
+          <button className="mt-8 rounded-lg bg-gray-900 px-8 py-3 text-sm font-medium text-white transition-all hover:bg-gray-800">
             {messages.cta.button}
           </button>
         </motion.div>
