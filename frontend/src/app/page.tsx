@@ -50,7 +50,7 @@ export default function HomePage() {
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="rounded-lg border border-gray-300 px-16 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
+              <button className="rounded-lg border border-gray-300 px-24 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
                 Get Started
               </button>
               <button 
@@ -100,7 +100,7 @@ export default function HomePage() {
               className="mt-12 flex justify-center"
               variants={fadeIn}
             >
-              <button className="group relative overflow-hidden rounded-lg border border-gray-900 px-24 py-4 text-lg font-medium text-gray-900 transition-all hover:text-white">
+              <button className="group relative overflow-hidden rounded-lg border border-gray-900 px-32 py-4 text-lg font-medium text-gray-900 transition-all hover:text-white">
                 <span className="relative z-10">Get Started</span>
                 <div className="absolute inset-0 -z-10 bg-gray-900 transition-transform duration-300 ease-out scale-x-0 group-hover:scale-x-100 origin-left" />
               </button>
