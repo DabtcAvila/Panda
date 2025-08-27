@@ -97,15 +97,12 @@ export default function HomePage() {
             </motion.p>
 
             <motion.div
-              className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
+              className="mt-12 flex justify-center"
               variants={fadeIn}
             >
-              <button className="group relative overflow-hidden rounded-lg border border-gray-900 px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:text-white">
-                <span className="relative z-10">{messages.hero.exploreButton}</span>
+              <button className="group relative overflow-hidden rounded-lg border border-gray-900 px-24 py-4 text-lg font-medium text-gray-900 transition-all hover:text-white">
+                <span className="relative z-10">Get Started</span>
                 <div className="absolute inset-0 -z-10 bg-gray-900 transition-transform duration-300 ease-out scale-x-0 group-hover:scale-x-100 origin-left" />
-              </button>
-              <button className="rounded-lg border border-gray-300 px-8 py-3 text-sm font-medium text-gray-600 transition-all hover:border-gray-900 hover:text-gray-900">
-                {messages.hero.demoButton}
               </button>
             </motion.div>
           </motion.div>
