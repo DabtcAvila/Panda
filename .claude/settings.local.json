@@ -38,7 +38,9 @@
       "Bash(dir)",
       "Bash(dir node_modules)",
       "Bash(taskkill:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(open:*)",
+      "Bash(docker:*)"
     ],
     "deny": []
   }
