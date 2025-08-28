@@ -53,6 +53,9 @@ export default function HomePage() {
               <button className="rounded-lg border border-gray-300 px-24 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
                 Get Started
               </button>
+              <button className="rounded-lg border border-gray-300 px-24 py-3 text-sm font-medium text-gray-900 transition-all hover:border-gray-900">
+                {messages.navbar.scheduleConsultation}
+              </button>
               <button 
                 onClick={() => changeLocale(locale === 'es' ? 'en' : 'es')}
                 className="flex items-center text-sm text-gray-600 transition-all hover:text-gray-900"

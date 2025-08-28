@@ -1,6 +1,7 @@
 {
   "navbar": {
-    "company": "Panda Technologies"
+    "company": "Panda Technologies",
+    "scheduleConsultation": "Schedule Consultation"
   },
   "hero": {
     "title": "Complex Data.",
