@@ -55,7 +55,7 @@ export default function HomePage() {
               </button>
               <button 
                 onClick={() => changeLocale(locale === 'es' ? 'en' : 'es')}
-                className="flex items-center rounded-lg border border-gray-300 px-6 py-2.5 text-sm font-medium text-gray-900 transition-all hover:border-gray-900"
+                className="flex items-center text-sm text-gray-600 transition-all hover:text-gray-900"
               >
                 <span className={`${locale === 'es' ? 'font-semibold' : ''}`}>ES</span>
                 <span className="mx-1.5 text-gray-400">|</span>
