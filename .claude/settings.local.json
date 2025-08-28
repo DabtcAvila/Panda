@@ -34,7 +34,11 @@
       "Bash(npm run dev:*)",
       "Bash(wget:*)",
       "Bash(say:*)",
-      "Bash(kill:*)"
+      "Bash(kill:*)",
+      "Bash(dir)",
+      "Bash(dir node_modules)",
+      "Bash(taskkill:*)",
+      "Bash(powershell:*)"
     ],
     "deny": []
   }

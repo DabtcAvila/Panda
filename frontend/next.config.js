@@ -17,6 +17,22 @@ const nextConfig = {
   
   // Headers de seguridad
   async headers() {
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    
+    // CSP para producción (sin eval)
+    const productionCSP = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'", // unsafe-inline necesario para Next.js
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com data:",
+      "img-src 'self' data: blob: https:",
+      "connect-src 'self' https://api.panda-technologies.com",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "upgrade-insecure-requests"
+    ].join('; ');
+    
     return [
       {
         source: '/:path*',
@@ -48,7 +64,15 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()'
-          }
+          },
+          // Solo aplicar CSP estricto en producción
+          // El middleware maneja CSP para desarrollo
+          ...(isDevelopment ? [] : [
+            {
+              key: 'Content-Security-Policy',
+              value: productionCSP
+            }
+          ])
         ]
       }
     ];
