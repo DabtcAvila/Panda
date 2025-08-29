@@ -41,7 +41,8 @@
       "Bash(powershell:*)",
       "Bash(open:*)",
       "Bash(docker:*)",
-      "Bash(npm run type-check:*)"
+      "Bash(npm run type-check:*)",
+      "Bash(npm run lint)"
     ],
     "deny": []
   }
