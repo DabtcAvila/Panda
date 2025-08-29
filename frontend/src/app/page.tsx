@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { MagnifyingGlassIcon, Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useInView } from 'react-intersection-observer';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function HomePage() {
   const { locale, messages, changeLocale } = useLanguage();
@@ -463,6 +463,8 @@ export default function HomePage() {
 function ArkhamSection({ messages }: { messages: any }) {
   const [activeTab, setActiveTab] = useState(1);
   const [isClient, setIsClient] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -470,18 +472,18 @@ function ArkhamSection({ messages }: { messages: any }) {
 
   // Intersection observers for each tab section
   const { ref: tab1Ref, inView: tab1InView } = useInView({
-    threshold: 0.6,
-    rootMargin: '-20% 0px -20% 0px'
+    threshold: 0.5,
+    rootMargin: '-40% 0px -40% 0px'
   });
 
   const { ref: tab2Ref, inView: tab2InView } = useInView({
-    threshold: 0.6,
-    rootMargin: '-20% 0px -20% 0px'
+    threshold: 0.5,
+    rootMargin: '-40% 0px -40% 0px'
   });
 
   const { ref: tab3Ref, inView: tab3InView } = useInView({
-    threshold: 0.6,
-    rootMargin: '-20% 0px -20% 0px'
+    threshold: 0.5,
+    rootMargin: '-40% 0px -40% 0px'
   });
 
   // Update active tab based on scroll position
@@ -496,9 +498,15 @@ function ArkhamSection({ messages }: { messages: any }) {
   }
 
   return (
-    <section className="relative min-h-screen bg-white overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+    <section ref={sectionRef} className="relative bg-white" style={{ height: '300vh', scrollSnapType: 'y mandatory' }}>
+      {/* Scroll snap points */}
+      <div ref={tab1Ref} className="absolute top-0 w-full h-screen" style={{ scrollSnapAlign: 'start' }} data-tab="1" />
+      <div ref={tab2Ref} className="absolute top-full w-full h-screen" style={{ scrollSnapAlign: 'start' }} data-tab="2" />
+      <div ref={tab3Ref} className="absolute w-full h-screen" style={{ top: '200vh', scrollSnapAlign: 'start' }} data-tab="3" />
+      
+      <div ref={containerRef} className="sticky top-0 h-screen flex items-center">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left Column - Content */}
           <div className="space-y-8">
             <motion.div
@@ -523,7 +531,6 @@ function ArkhamSection({ messages }: { messages: any }) {
             <div className="hidden lg:block space-y-8">
               {/* Tab 1 - Data Platform */}
               <div 
-                ref={tab1Ref} 
                 className={`border-b border-gray-200 pb-8 transition-all duration-500 ${activeTab === 1 ? 'opacity-100' : 'opacity-40'}`}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -558,7 +565,6 @@ function ArkhamSection({ messages }: { messages: any }) {
 
               {/* Tab 2 - AI Platform */}
               <div 
-                ref={tab2Ref} 
                 className={`border-b border-gray-200 pb-8 transition-all duration-500 ${activeTab === 2 ? 'opacity-100' : 'opacity-40'}`}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -591,7 +597,6 @@ function ArkhamSection({ messages }: { messages: any }) {
 
               {/* Tab 3 - AI Applications */}
               <div 
-                ref={tab3Ref} 
                 className={`pb-8 transition-all duration-500 ${activeTab === 3 ? 'opacity-100' : 'opacity-40'}`}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -798,6 +803,7 @@ function ArkhamSection({ messages }: { messages: any }) {
           <div className="text-center text-sm text-gray-500 mb-4">
             Scroll to see platform layers
           </div>
+        </div>
         </div>
       </div>
     </section>
