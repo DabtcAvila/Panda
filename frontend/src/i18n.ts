@@ -7,9 +7,10 @@ export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'es';
 
 export default getRequestConfig(async ({locale}) => {
-  if (!locales.includes(locale as any)) notFound();
+  if (!locales.includes(locale as Locale)) notFound();
 
   return {
+    locale: locale as Locale,
     messages: (await import(`./locales/${locale}.json`)).default,
     timeZone: 'America/Mexico_City'
   };

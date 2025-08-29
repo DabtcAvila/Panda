@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import Lottie from 'lottie-react';
 
 interface ArkhamSectionProps {
   className?: string;
@@ -12,6 +13,7 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
   // Estados del componente
   const [currentTab, setCurrentTab] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [lottieData, setLottieData] = useState<object | null>(null);
   
   // Referencias para el sistema de scroll
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,11 +21,11 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
   const scrollHeightRef = useRef(0);
   
   // Configuración de umbrales de scroll
-  const scrollThresholds = {
+  const scrollThresholds = useMemo(() => ({
     1: { min: 0, max: 0.35 },
     2: { min: 0.32, max: 0.68 },
     3: { min: 0.65, max: 1.0 }
-  };
+  }), []);
 
   // Función para activar tab
   const activateTab = useCallback((tabNumber: number, withAnimation = true) => {
@@ -66,7 +68,7 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
       console.log(`📜 Scroll activó tab ${newTab} (${Math.round(scrollPercent * 100)}%)`);
       activateTab(newTab, true);
     }
-  }, [currentTab, isAnimating, activateTab]);
+  }, [currentTab, isAnimating, activateTab, scrollThresholds]);
 
   // Click en tabs
   const handleTabClick = useCallback((tabNumber: number) => {
@@ -80,6 +82,14 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
       behavior: 'smooth'
     });
   }, [activateTab]);
+
+  // Load Lottie animation data
+  useEffect(() => {
+    fetch('/arkham-lottie.json')
+      .then(response => response.json())
+      .then(data => setLottieData(data))
+      .catch(error => console.error('Error loading Lottie animation:', error));
+  }, []);
 
   // Configuración inicial y eventos
   useEffect(() => {
@@ -166,7 +176,7 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                The Data & AI Platform powering your company's future.
+                The Data & AI Platform powering your company&apos;s future.
               </motion.p>
               
               {/* CTA BUTTON */}
@@ -289,9 +299,9 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
               />
               
-              {/* LEVEL 4: LOTTIE PLACEHOLDER */}
+              {/* LEVEL 4: LOTTIE ANIMATION */}
               <motion.div 
-                className="level float-level lottie-placeholder"
+                className="level float-level lottie-animation"
                 animate={{
                   opacity: currentTab >= 3 ? 1 : 0,
                   y: currentTab >= 3 ? -120 : -100,
@@ -299,9 +309,23 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                 }}
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
               >
-                <div className="lottie-content">
-                  🎬 Lottie Animation
-                </div>
+                {lottieData ? (
+                  <Lottie 
+                    animationData={lottieData}
+                    loop={true}
+                    autoplay={currentTab >= 3}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      maxWidth: '200px',
+                      maxHeight: '200px'
+                    }}
+                  />
+                ) : (
+                  <div className="lottie-loading">
+                    Loading...
+                  </div>
+                )}
               </motion.div>
             </motion.div>
           </div>
@@ -519,13 +543,13 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
           z-index: 2;
         }
         
-        .lottie-placeholder {
+        .lottie-animation {
           display: flex;
           align-items: center;
           justify-content: center;
         }
         
-        .lottie-content {
+        .lottie-loading {
           display: flex;
           align-items: center;
           justify-content: center;

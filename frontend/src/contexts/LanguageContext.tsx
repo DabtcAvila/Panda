@@ -108,11 +108,9 @@ const STORAGE_KEY = 'panda-locale';
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocale] = useState<Locale>('es');
   const [messages, setMessages] = useState<Messages>(messagesMap.es);
-  const [isClient, setIsClient] = useState(false);
 
   // Load locale from localStorage on mount (client-side only)
   useEffect(() => {
-    setIsClient(true);
     if (typeof window !== 'undefined') {
       const savedLocale = localStorage.getItem(STORAGE_KEY) as Locale;
       if (savedLocale && (savedLocale === 'es' || savedLocale === 'en')) {
