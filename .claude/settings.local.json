@@ -45,7 +45,8 @@
       "Bash(npm run lint)",
       "Bash(npm run build:*)",
       "Bash(claude status)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(/dev/null)"
     ],
     "deny": []
   }
