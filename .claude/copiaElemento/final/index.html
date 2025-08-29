@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arkham Section - Replica Exacta</title>
+    <title>Arkham Section - Scroll Sync FIXED</title>
     
     <style>
         /* ============================================
-           ARKHAM SECTION - ESTILOS PRINCIPALES
+           ARKHAM SECTION - SISTEMA SCROLL SINCRONIZADO
            ============================================ */
         
         /* RESETEO Y BASE */
@@ -22,30 +22,34 @@
             line-height: 1.6;
             color: #333;
             background: #f5f5f5;
-            padding: 50px 0;
+            padding: 50px 0 150vh 0; /* Espacio adicional para hacer scroll */
         }
         
         /* ============================================
-           SECCIÓN PRINCIPAL ARKHAM
+           CONTENEDOR PRINCIPAL CON ALTURA FIJA PARA SCROLL
            ============================================ */
         
+        .arkham-scroll-container {
+            /* Hacemos el contenedor suficientemente alto para permitir scroll */
+            height: 300vh; /* 3 veces la altura del viewport */
+            position: relative;
+        }
+        
         .section-2.isometric.arkham-tabs-section {
-            /* Posicionamiento y tamaño fijo según original */
-            translate: none;
-            rotate: none; 
-            scale: none;
-            inset: 0px auto auto 0px;
+            /* Sticky positioning para que se quede fijo mientras hacemos scroll */
+            position: sticky;
+            top: 50px;
+            
+            /* Dimensiones y estilos según el original */
             margin: 0 auto;
             max-width: 857px;
             width: 857px;
             max-height: 1025.91px;
             height: 1025.91px;
             padding: 60px 24px;
-            transform: translate(0px, 0px);
             
-            /* Estilos adicionales */
+            /* Estilos visuales */
             background: #fff;
-            position: relative;
             overflow: hidden;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -90,12 +94,6 @@
         }
         
         .line-text {
-            translate: none;
-            rotate: none;
-            scale: none;
-            filter: blur(0px);
-            opacity: 1;
-            transform: translate(0px, 0%);
             display: inline-block;
         }
         
@@ -152,7 +150,7 @@
         }
         
         .cotainer-vertical-tab.cvt-mobile {
-            display: none; /* Oculto en desktop */
+            display: none;
         }
         
         /* ESTILO COMÚN PARA TABS */
@@ -173,6 +171,7 @@
             background-color: #f8f9fa;
         }
         
+        /* TAB ACTIVO - Estados según el original */
         .scroll-tab.active .arkham-tab-heading .tagline-2 {
             color: #000 !important;
             font-weight: 600;
@@ -222,7 +221,7 @@
             line-height: 1.6;
             margin: 0;
             
-            /* Estados por defecto según original */
+            /* Estados por defecto - cerrado */
             max-height: 0px;
             z-index: -1;
             opacity: 0;
@@ -231,7 +230,7 @@
             transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         
-        /* TAB ACTIVO */
+        /* TAB ACTIVO - expansión completa según original */
         .scroll-tab.active .tab-content.hide-mobile {
             max-height: 70px !important;
             z-index: 1 !important;
@@ -252,15 +251,6 @@
             justify-content: center;
         }
         
-        /* CONTENIDO MÓVIL (OCULTO EN DESKTOP) */
-        .mobile-content-isometric {
-            display: none;
-        }
-        
-        .iso-content {
-            display: none;
-        }
-        
         /* WRAPPER DE NIVELES ISOMÉTRICOS */
         .levels-wrapper {
             position: relative;
@@ -271,7 +261,7 @@
             opacity: 1;
         }
         
-        /* NIVELES ISOMÉTRICOS */
+        /* NIVELES ISOMÉTRICOS - Estados iniciales según el original */
         .level {
             position: absolute;
             top: 0;
@@ -283,70 +273,73 @@
         }
         
         .level.first-level {
-            /* Nivel base - visible por defecto */
-            opacity: 1;
-            translate: none;
-            rotate: none;
-            scale: none;
+            /* Nivel base - opacidad 0 inicialmente como en el original */
+            opacity: 0;
             transform: translate(0px, 0px);
             z-index: 1;
         }
         
         .level.float-level {
-            /* Niveles flotantes - ocultos por defecto */
+            /* Niveles flotantes - ocultos y arriba por defecto */
             opacity: 0;
             top: -100%;
             z-index: 2;
         }
         
-        /* Estados específicos por tab */
-        body.tab-1-active .level.first-level {
-            opacity: 1;
+        /* ============================================
+           ESTADOS DE SCROLL - BASADOS EN PORCENTAJE DE SCROLL
+           ============================================ */
+        
+        /* TAB 1 ACTIVO - Solo nivel base visible (como el original) */
+        .scroll-state-1 .level.first-level {
+            opacity: 1 !important;
             transform: translate(0px, 0px);
         }
         
-        body.tab-1-active .level.float-level {
-            opacity: 0;
-            top: -100%;
+        .scroll-state-1 .level.float-level {
+            opacity: 0 !important;
+            top: -100% !important;
         }
         
-        body.tab-2-active .level.first-level {
-            opacity: 1;
+        /* TAB 2 ACTIVO - Base + nivel 2 */
+        .scroll-state-2 .level.first-level {
+            opacity: 1 !important;
             transform: translate(0px, 0px);
         }
         
-        body.tab-2-active .level.float-level:nth-of-type(2) {
-            opacity: 1;
-            top: 0%;
+        .scroll-state-2 .level.float-level:nth-of-type(2) {
+            opacity: 1 !important;
+            top: 0% !important;
             transform: translate(20px, -60px);
         }
         
-        body.tab-2-active .level.float-level:nth-of-type(3),
-        body.tab-2-active .level.float-level:nth-of-type(4) {
-            opacity: 0;
-            top: -100%;
+        .scroll-state-2 .level.float-level:nth-of-type(3),
+        .scroll-state-2 .level.float-level:nth-of-type(4) {
+            opacity: 0 !important;
+            top: -100% !important;
         }
         
-        body.tab-3-active .level.first-level {
-            opacity: 1;
+        /* TAB 3 ACTIVO - Base + nivel 2 + nivel 3 + Lottie */
+        .scroll-state-3 .level.first-level {
+            opacity: 1 !important;
             transform: translate(0px, 0px);
         }
         
-        body.tab-3-active .level.float-level:nth-of-type(2) {
-            opacity: 1;
-            top: 0%;
+        .scroll-state-3 .level.float-level:nth-of-type(2) {
+            opacity: 1 !important;
+            top: 0% !important;
             transform: translate(20px, -60px);
         }
         
-        body.tab-3-active .level.float-level:nth-of-type(3) {
-            opacity: 1;
-            top: 0%;
+        .scroll-state-3 .level.float-level:nth-of-type(3) {
+            opacity: 1 !important;
+            top: 0% !important;
             transform: translate(40px, -120px);
         }
         
-        body.tab-3-active .level.float-level:nth-of-type(4) {
-            opacity: 1;
-            top: 0%;
+        .scroll-state-3 .level.float-level:nth-of-type(4) {
+            opacity: 1 !important;
+            top: 0% !important;
             transform: translate(40px, -120px);
         }
         
@@ -355,12 +348,18 @@
            ============================================ */
         
         @media (max-width: 768px) {
+            .arkham-scroll-container {
+                height: 200vh; /* Menos altura en mobile */
+            }
+            
             .section-2.isometric.arkham-tabs-section {
                 max-width: 100%;
                 width: 100%;
                 height: auto;
                 max-height: none;
                 padding: 40px 20px;
+                position: relative;
+                top: 0;
             }
             
             .isometric-row {
@@ -385,22 +384,10 @@
                 padding-left: 24px;
             }
             
-            .mobile-content-isometric {
-                display: block;
-                margin-bottom: 24px;
-            }
-            
             .box-isometric {
                 height: 300px;
             }
         }
-        
-        /* UTILIDADES */
-        .w-inline-block { display: inline-block; }
-        .btn-hover { transition: all 0.3s ease; }
-        .hover-black:hover { background-color: #000; color: #fff; }
-        .no-margin { margin: 0; }
-        .mt-16 { margin-top: 16px; }
         
         /* DEBUG STYLES */
         .debug-info {
@@ -415,167 +402,294 @@
             font-size: 12px;
             z-index: 1000;
         }
+        
+        .scroll-indicator {
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 10px;
+            z-index: 1000;
+        }
     </style>
 </head>
-<body class="tab-1-active">
+<body class="scroll-state-1">
     <!-- DEBUG INFO -->
     <div class="debug-info" id="debugInfo">
         Tab Activo: <span id="currentTab">1</span><br>
-        Scroll: <span id="scrollPos">0</span><br>
+        Scroll: <span id="scrollPos">0</span>%<br>
         Animando: <span id="isAnimating">false</span>
     </div>
     
-    <!-- ARKHAM SECTION - ISOMETRIC TABS -->
-    <section class="section-2 isometric arkham-tabs-section">
-        <div class="row-2 col-3-custom no-margin row isometric-row">
-            
-            <!-- LEFT COLUMN: HEADLINE AND TABS -->
-            <div id="w-node-_3f8cb03d-4198-cf1c-4d0a-bae6cf70bb87-03efec94" class="box-headline-isometric">
-                <div class="cotainer-headline">
-                    <!-- MAIN TITLE -->
-                    <h2 class="h2-2 words-up">
-                        <div class="line">
-                            <span class="line-text">Arkham</span>
-                        </div>
-                    </h2>
-                    
-                    <!-- SUBTITLE -->
-                    <p class="subtitle color-black">The Data &amp; AI Platform powering your company's future.</p>
-                    
-                    <!-- CTA BUTTON -->
-                    <a href="/contact" class="button secondary small mt-16 btn-hover hover-black w-inline-block">
-                        <div class="btn-content">
-                            <div class="text-block-8">Book a demo</div>
-                            <img loading="eager" src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/684f12e6a2f854b06e23b65e_circle-arrow-black.svg" alt="" class="image-7">
-                        </div>
-                    </a>
-                </div>
-
-                <!-- DESKTOP TABS CONTAINER -->
-                <div class="cotainer-vertical-tab cvt-desk">
-                    <!-- TAB 1: DATA PLATFORM -->
-                    <div class="box-top-bottom-line scroll-tab scroll-tab-1 active" data-tab="1">
-                        <div class="arkham-tab-heading">
-                            <p class="tagline-2">DATA PLATFORM</p>
-                            <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
-                        </div>
-                        <p class="tab-content hide-mobile" data-real-height="70">A Data Lakehouse built for scale. Our platform ensures full data governance and lineage across your operations.</p>
-                    </div>
-                    
-                    <!-- TAB 2: AI PLATFORM -->
-                    <div class="box-bottom-line scroll-tab scroll-tab-2" data-tab="2">
-                        <div class="arkham-tab-heading">
-                            <p class="tagline-2">AI PLATFORM</p>
-                            <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
-                        </div>
-                        <p class="tab-content hide-mobile" data-real-height="70">From Generative AI to multiple classes of Machine Learning Models, Arkham is AI tailored to your operations.</p>
-                    </div>
-                    
-                    <!-- TAB 3: AI-POWERED APPLICATIONS -->
-                    <div class="box-bottom-line scroll-tab scroll-tab-3" data-tab="3">
-                        <div class="arkham-tab-heading">
-                            <p class="tagline-2">AI-Powered Applications</p>
-                            <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
-                        </div>
-                        <p class="tab-content hide-mobile" data-real-height="70">Gain intelligence, control and solve your most complex challenges with your Data and AI tailored to your operations.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MOBILE TABS CONTAINER -->
-            <div id="w-node-_3f8cb03d-4198-cf1c-4d0a-bae6cf70bba9-03efec94" class="cotainer-vertical-tab cvt-mobile">
-                <!-- MOBILE TAB 1 -->
-                <div class="box-top-bottom-line scroll-tab-mobile scroll-tab-1" data-tab="1">
-                    <div class="arkham-tab-heading">
-                        <p class="tagline-2">PLATAFORMA DE DATOS</p>
-                        <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
-                    </div>
-                    <p class="tab-content hide-mobile">Consolida todos los datos de tu empresa en un Data Lakehouse dedicado a tu operación.</p>
-                </div>
+    <div class="scroll-indicator" id="scrollIndicator">
+        Zona: <span id="scrollZone">Inicio</span><br>
+        Progreso: <span id="scrollProgress">0</span>%
+    </div>
+    
+    <!-- CONTENEDOR DE SCROLL -->
+    <div class="arkham-scroll-container">
+        <!-- ARKHAM SECTION - ISOMETRIC TABS -->
+        <section class="section-2 isometric arkham-tabs-section">
+            <div class="row-2 col-3-custom no-margin row isometric-row">
                 
-                <!-- MOBILE TAB 2 -->
-                <div class="box-bottom-line scroll-tab-mobile scroll-tab-2" data-tab="2">
-                    <div class="arkham-tab-heading">
-                        <p class="tagline-2">Plataforma de AI</p>
-                        <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
+                <!-- LEFT COLUMN: HEADLINE AND TABS -->
+                <div id="w-node-_3f8cb03d-4198-cf1c-4d0a-bae6cf70bb87-03efec94" class="box-headline-isometric">
+                    <div class="cotainer-headline">
+                        <!-- MAIN TITLE -->
+                        <h2 class="h2-2 words-up">
+                            <div class="line">
+                                <span class="line-text">Arkham</span>
+                            </div>
+                        </h2>
+                        
+                        <!-- SUBTITLE -->
+                        <p class="subtitle color-black">The Data &amp; AI Platform powering your company's future.</p>
+                        
+                        <!-- CTA BUTTON -->
+                        <a href="/contact" class="button secondary small mt-16 btn-hover hover-black w-inline-block">
+                            <div class="btn-content">
+                                <div class="text-block-8">Book a demo</div>
+                                <img loading="eager" src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/684f12e6a2f854b06e23b65e_circle-arrow-black.svg" alt="" class="image-7">
+                            </div>
+                        </a>
                     </div>
-                    <p class="tab-content hide-mobile">Desde AI Generativo hasta múltiples clases de modelos de Machine Learning.</p>
+
+                    <!-- DESKTOP TABS CONTAINER -->
+                    <div class="cotainer-vertical-tab cvt-desk">
+                        <!-- TAB 1: DATA PLATFORM -->
+                        <div class="box-top-bottom-line scroll-tab scroll-tab-1 active" data-tab="1">
+                            <div class="arkham-tab-heading">
+                                <p class="tagline-2">DATA PLATFORM</p>
+                                <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
+                            </div>
+                            <p class="tab-content hide-mobile">A Data Lakehouse built for scale. Our platform ensures full data governance and lineage across your operations.</p>
+                        </div>
+                        
+                        <!-- TAB 2: AI PLATFORM -->
+                        <div class="box-bottom-line scroll-tab scroll-tab-2" data-tab="2">
+                            <div class="arkham-tab-heading">
+                                <p class="tagline-2">AI PLATFORM</p>
+                                <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
+                            </div>
+                            <p class="tab-content hide-mobile">From Generative AI to multiple classes of Machine Learning Models, Arkham is AI tailored to your operations.</p>
+                        </div>
+                        
+                        <!-- TAB 3: AI-POWERED APPLICATIONS -->
+                        <div class="box-bottom-line scroll-tab scroll-tab-3" data-tab="3">
+                            <div class="arkham-tab-heading">
+                                <p class="tagline-2">AI-Powered Applications</p>
+                                <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
+                            </div>
+                            <p class="tab-content hide-mobile">Gain intelligence, control and solve your most complex challenges with your Data and AI tailored to your operations.</p>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- MOBILE TAB 3 -->
-                <div class="box-bottom-line scroll-tab-mobile scroll-tab-3" data-tab="3">
-                    <div class="arkham-tab-heading">
-                        <p class="tagline-2">Aplicativos inteligentes</p>
-                        <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
+
+                <!-- MOBILE TABS CONTAINER -->
+                <div id="w-node-_3f8cb03d-4198-cf1c-4d0a-bae6cf70bba9-03efec94" class="cotainer-vertical-tab cvt-mobile">
+                    <!-- MOBILE TAB 1 -->
+                    <div class="box-top-bottom-line scroll-tab-mobile scroll-tab-1" data-tab="1">
+                        <div class="arkham-tab-heading">
+                            <p class="tagline-2">PLATAFORMA DE DATOS</p>
+                            <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
+                        </div>
+                        <p class="tab-content hide-mobile">Consolida todos los datos de tu empresa en un Data Lakehouse dedicado a tu operación.</p>
                     </div>
-                    <p class="tab-content hide-mobile">Accede fácilmente a tus datos con los mejores modelos de Machine Learning y AI Generativa.</p>
+                    
+                    <!-- MOBILE TAB 2 -->
+                    <div class="box-bottom-line scroll-tab-mobile scroll-tab-2" data-tab="2">
+                        <div class="arkham-tab-heading">
+                            <p class="tagline-2">Plataforma de AI</p>
+                            <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
+                        </div>
+                        <p class="tab-content hide-mobile">Desde AI Generativo hasta múltiples clases de modelos de Machine Learning.</p>
+                    </div>
+                    
+                    <!-- MOBILE TAB 3 -->
+                    <div class="box-bottom-line scroll-tab-mobile scroll-tab-3" data-tab="3">
+                        <div class="arkham-tab-heading">
+                            <p class="tagline-2">Aplicativos inteligentes</p>
+                            <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/685af73604289ee24118ae55_arrow-right.svg" loading="eager" alt="" class="arrow-rights">
+                        </div>
+                        <p class="tab-content hide-mobile">Accede fácilmente a tus datos con los mejores modelos de Machine Learning y AI Generativa.</p>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: ISOMETRIC VISUALIZATION -->
+                <div id="w-node-_3f8cb03d-4198-cf1c-4d0a-bae6cf70bbbf-03efec94" class="box-isometric">
+                    <!-- ISOMETRIC LEVELS VISUALIZATION -->
+                    <div class="levels-wrapper">
+                        <!-- LEVEL 1: BASE LAYER -->
+                        <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81fa191298451da48f_Tapa1.png" 
+                             loading="eager" 
+                             alt="Data Platform Level" 
+                             class="level first-level">
+                        
+                        <!-- LEVEL 2: MIDDLE LAYER -->
+                        <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa2.png" 
+                             loading="eager" 
+                             alt="AI Platform Level" 
+                             class="level float-level">
+                        
+                        <!-- LEVEL 3: TOP LAYER -->
+                        <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81149f2caecbc44ebe_Tapa3.png" 
+                             loading="eager" 
+                             alt="Applications Level" 
+                             class="level float-level">
+                        
+                        <!-- LEVEL 4: LOTTIE ANIMATION -->
+                        <div class="level float-level" 
+                             data-w-id="3f8cb03d-4198-cf1c-4d0a-bae6cf70bbcc" 
+                             data-animation-type="lottie" 
+                             data-src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/6867f65721d27d8f1055bcb9_Landing%20Isomtrico.svg%20(2).json" 
+                             data-loop="1" 
+                             data-direction="1" 
+                             data-autoplay="1">
+                             <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#666;font-size:14px;background:rgba(0,0,0,0.05);border-radius:8px;">
+                                 🎬 Lottie Animation
+                             </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- RIGHT COLUMN: ISOMETRIC VISUALIZATION -->
-            <div id="w-node-_3f8cb03d-4198-cf1c-4d0a-bae6cf70bbbf-03efec94" class="box-isometric">
-                <!-- MOBILE CONTENT DESCRIPTIONS -->
-                <div class="mobile-content-isometric">
-                    <p class="iso-content iso-content-1">Consolida todos los datos de tu empresa en un Data Lakehouse dedicado a tu operación.</p>
-                    <p class="iso-content iso-content-2">Desde AI Generativo hasta múltiples clases de modelos de Machine Learning.</p>
-                    <p class="iso-content iso-content-3">Accede fácilmente a tus datos con los mejores modelos de Machine Learning y AI Generativa.</p>
-                </div>
-
-                <!-- ISOMETRIC LEVELS VISUALIZATION -->
-                <div class="levels-wrapper">
-                    <!-- LEVEL 1: BASE LAYER -->
-                    <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81fa191298451da48f_Tapa1.png" 
-                         loading="eager" 
-                         alt="Data Platform Level" 
-                         class="level first-level">
-                    
-                    <!-- LEVEL 2: MIDDLE LAYER -->
-                    <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa2.png" 
-                         loading="eager" 
-                         alt="AI Platform Level" 
-                         class="level float-level">
-                    
-                    <!-- LEVEL 3: TOP LAYER -->
-                    <img src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81149f2caecbc44ebe_Tapa3.png" 
-                         loading="eager" 
-                         alt="Applications Level" 
-                         class="level float-level">
-                    
-                    <!-- LEVEL 4: LOTTIE ANIMATION -->
-                    <div class="level float-level" 
-                         data-w-id="3f8cb03d-4198-cf1c-4d0a-bae6cf70bbcc" 
-                         data-animation-type="lottie" 
-                         data-src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/6867f65721d27d8f1055bcb9_Landing%20Isomtrico.svg%20(2).json" 
-                         data-loop="1" 
-                         data-direction="1" 
-                         data-autoplay="1">
-                         <!-- Lottie animation will be injected here -->
-                         <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#666;font-size:14px;background:rgba(0,0,0,0.05);border-radius:8px;">
-                             🎬 Lottie Animation
-                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <script>
         /**
-         * ARKHAM SECTION - SISTEMA INTEGRADO SIMPLIFICADO
-         * Para demostración y testing inicial
+         * ARKHAM SCROLL SYSTEM - VERSIÓN FINAL SINCRONIZADA
+         * ================================================
+         * Sistema simple y efectivo que sincroniza scroll con animaciones
          */
-        class ArkhamSystem {
+        class ArkhamScrollSync {
             constructor() {
                 this.currentTab = 1;
                 this.isAnimating = false;
+                this.container = null;
+                this.section = null;
+                this.scrollHeight = 0;
+                
+                // Umbrales de scroll para cada tab (en porcentajes)
+                // Optimizados para transiciones suaves
+                this.scrollThresholds = {
+                    1: { min: 0, max: 0.35 },      // 0% - 35% (un poco más de espacio)
+                    2: { min: 0.32, max: 0.68 },   // 32% - 68% (overlap para suavidad)  
+                    3: { min: 0.65, max: 1.0 }     // 65% - 100%
+                };
+                
                 this.init();
             }
             
             init() {
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', () => this.setup());
+                } else {
+                    this.setup();
+                }
+            }
+            
+            setup() {
+                console.log('🚀 Iniciando Arkham Scroll Sync');
+                
+                // Elementos del DOM
+                this.container = document.querySelector('.arkham-scroll-container');
+                this.section = document.querySelector('.arkham-tabs-section');
+                
+                if (!this.container || !this.section) {
+                    console.error('❌ No se encontraron los elementos principales');
+                    return;
+                }
+                
+                // Calcular altura total de scroll
+                this.scrollHeight = this.container.scrollHeight - window.innerHeight;
+                
+                // Configurar eventos
+                this.setupScrollListener();
                 this.setupTabClickListeners();
                 this.setupKeyboardControls();
+                
+                // Estado inicial
+                this.activateTab(1, false);
                 this.updateDebugInfo();
-                console.log('🚀 Arkham System iniciado');
+                
+                console.log(`✅ Sistema configurado. Altura de scroll: ${this.scrollHeight}px`);
+                
+                // Instrucciones
+                console.log(`
+                🎮 ARKHAM SCROLL SYNC - CONTROLES:
+                
+                📜 Haz scroll para cambiar tabs automáticamente
+                👆 Click en los tabs para cambio manual
+                ⌨️  Presiona 1, 2 o 3 para testing
+                🐛 window.forceTab(n) - Forzar tab
+                📊 window.debugArkham() - Estado del sistema
+                
+                ✨ Los niveles isométricos se sincronizan con el scroll
+                🎬 La animación Lottie aparece en el tab 3
+                `);
+            }
+            
+            setupScrollListener() {
+                let ticking = false;
+                
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            this.handleScroll();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                });
+            }
+            
+            handleScroll() {
+                if (this.isAnimating) return;
+                
+                const scrollY = window.pageYOffset;
+                const scrollPercent = Math.min(scrollY / this.scrollHeight, 1);
+                
+                // Determinar qué tab debe estar activo
+                let newTab = this.currentTab;
+                
+                // Lógica mejorada con overlapping zones para suavidad
+                if (scrollPercent <= this.scrollThresholds[1].max) {
+                    newTab = 1;
+                } else if (scrollPercent >= this.scrollThresholds[2].min && scrollPercent <= this.scrollThresholds[2].max) {
+                    newTab = 2;
+                } else if (scrollPercent >= this.scrollThresholds[3].min) {
+                    newTab = 3;
+                }
+                
+                // Actualizar debug info
+                this.updateScrollDebug(scrollPercent, newTab);
+                
+                // Cambiar tab si es necesario
+                if (newTab !== this.currentTab) {
+                    console.log(`📜 Scroll activó tab ${newTab} (${Math.round(scrollPercent * 100)}%)`);
+                    this.activateTab(newTab, true);
+                }
+                
+                this.updateDebugInfo();
+            }
+            
+            updateScrollDebug(scrollPercent, detectedTab) {
+                const scrollZone = document.getElementById('scrollZone');
+                const scrollProgress = document.getElementById('scrollProgress');
+                
+                if (scrollZone && scrollProgress) {
+                    let zone = 'Inicio';
+                    if (scrollPercent >= 0.65) zone = 'Zona 3 (Apps)';
+                    else if (scrollPercent >= 0.32) zone = 'Zona 2 (AI)';
+                    else if (scrollPercent > 0) zone = 'Zona 1 (Data)';
+                    
+                    scrollZone.textContent = zone;
+                    scrollProgress.textContent = Math.round(scrollPercent * 100);
+                }
             }
             
             setupTabClickListeners() {
@@ -584,41 +698,54 @@
                     tab.addEventListener('click', (e) => {
                         e.preventDefault();
                         const tabNumber = parseInt(tab.getAttribute('data-tab'));
-                        this.activateTab(tabNumber);
+                        this.activateTab(tabNumber, true);
+                        
+                        // Opcional: scroll a la posición correspondiente
+                        const targetPercent = (tabNumber - 1) * 0.33 + 0.16; // Centro de cada zona
+                        const targetScroll = targetPercent * this.scrollHeight;
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
                     });
                 });
             }
             
             setupKeyboardControls() {
                 document.addEventListener('keydown', (e) => {
-                    if (e.key === '1' || e.key === '2' || e.key === '3') {
-                        this.activateTab(parseInt(e.key));
+                    if (e.key >= '1' && e.key <= '3') {
+                        e.preventDefault();
+                        this.activateTab(parseInt(e.key), true);
                     }
                 });
             }
             
-            activateTab(tabNumber) {
-                if (this.isAnimating || tabNumber === this.currentTab) return;
+            activateTab(tabNumber, withAnimation = true) {
+                if (this.isAnimating && withAnimation) return;
                 
-                console.log(`🎯 Activando Tab ${tabNumber}`);
-                this.isAnimating = true;
+                const previousTab = this.currentTab;
                 this.currentTab = tabNumber;
                 
-                // Actualizar clase del body
-                document.body.className = document.body.className
-                    .replace(/tab-[1-3]-active/g, '');
-                document.body.classList.add(`tab-${tabNumber}-active`);
+                console.log(`🎯 Activando Tab ${tabNumber} (anterior: ${previousTab})`);
                 
-                // Actualizar estado visual de tabs
+                if (withAnimation) {
+                    this.isAnimating = true;
+                }
+                
+                // Cambiar clase del body para CSS targeting
+                document.body.className = document.body.className
+                    .replace(/scroll-state-[1-3]/g, '');
+                document.body.classList.add(`scroll-state-${tabNumber}`);
+                
+                // Actualizar estados visuales
                 this.updateTabStates(tabNumber);
                 
-                // Debug
-                this.updateDebugInfo();
-                
-                setTimeout(() => {
-                    this.isAnimating = false;
-                    this.updateDebugInfo();
-                }, 800);
+                if (withAnimation) {
+                    setTimeout(() => {
+                        this.isAnimating = false;
+                        console.log('✅ Animación de tab completada');
+                    }, 800);
+                }
             }
             
             updateTabStates(activeTab) {
@@ -634,49 +761,44 @@
             }
             
             updateDebugInfo() {
-                document.getElementById('currentTab').textContent = this.currentTab;
-                document.getElementById('isAnimating').textContent = this.isAnimating;
-                document.getElementById('scrollPos').textContent = Math.round(window.pageYOffset);
+                const elements = {
+                    currentTab: document.getElementById('currentTab'),
+                    scrollPos: document.getElementById('scrollPos'),
+                    isAnimating: document.getElementById('isAnimating')
+                };
+                
+                if (elements.currentTab) elements.currentTab.textContent = this.currentTab;
+                if (elements.isAnimating) elements.isAnimating.textContent = this.isAnimating;
+                if (elements.scrollPos) {
+                    const scrollPercent = Math.min(window.pageYOffset / this.scrollHeight, 1);
+                    elements.scrollPos.textContent = Math.round(scrollPercent * 100);
+                }
             }
             
             // API pública para testing
             forceTab(n) {
-                this.activateTab(n);
+                if (n >= 1 && n <= 3) {
+                    this.activateTab(n, true);
+                }
             }
             
             debugInfo() {
                 return {
                     currentTab: this.currentTab,
-                    isAnimating: this.isAnimating
+                    isAnimating: this.isAnimating,
+                    scrollHeight: this.scrollHeight,
+                    currentScrollPercent: Math.round((window.pageYOffset / this.scrollHeight) * 100)
                 };
             }
         }
         
         // Inicializar sistema
-        const arkhamSystem = new ArkhamSystem();
+        const arkhamSync = new ArkhamScrollSync();
         
         // API global para testing
-        window.arkhamSystem = arkhamSystem;
-        window.forceTab = (n) => arkhamSystem.forceTab(n);
-        window.debugArkham = () => console.log(arkhamSystem.debugInfo());
-        
-        // Actualizar info de debug en scroll
-        window.addEventListener('scroll', () => {
-            arkhamSystem.updateDebugInfo();
-        });
-        
-        // Instrucciones en consola
-        console.log(`
-        🎮 ARKHAM DEMO - CONTROLES DISPONIBLES:
-        
-        👆 Click en los tabs para cambiar
-        ⌨️  Presiona 1, 2 o 3 para cambiar tabs
-        🐛 window.forceTab(n) - Cambiar tab por código
-        📊 window.debugArkham() - Ver estado del sistema
-        
-        ✨ Los niveles isométricos se animan automáticamente
-        🎬 La animación Lottie aparece en el tab 3
-        `);
+        window.arkhamSync = arkhamSync;
+        window.forceTab = (n) => arkhamSync.forceTab(n);
+        window.debugArkham = () => console.log(arkhamSync.debugInfo());
     </script>
 </body>
 </html>
