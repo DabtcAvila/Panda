@@ -1,96 +1,23 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Lottie from 'lottie-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ArkhamSectionProps {
   className?: string;
 }
 
 export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
-  
-  // Estados del componente
+  const { messages } = useLanguage();
   const [currentTab, setCurrentTab] = useState(1);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [showLottie, setShowLottie] = useState(false);
   const [lottieData, setLottieData] = useState<object | null>(null);
-  
-  // Referencias para el sistema de scroll
-  const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const scrollHeightRef = useRef(0);
-  
-  // Configuración de umbrales de scroll
-  const scrollThresholds = useMemo(() => ({
-    1: { min: 0, max: 0.33 },
-    2: { min: 0.33, max: 0.66 },
-    3: { min: 0.66, max: 1.0 }
-  }), []);
+  const [isSticky, setIsSticky] = useState(true);
 
-  // Función para activar tab
-  const activateTab = useCallback((tabNumber: number, withAnimation = true) => {
-    if (isAnimating && withAnimation) return;
-    
-    const previousTab = currentTab;
-    setCurrentTab(tabNumber);
-    
-    console.log(`🎯 Activando Tab ${tabNumber} (anterior: ${previousTab})`);
-    
-    if (withAnimation) {
-      setIsAnimating(true);
-      // Optimized timing for 60fps
-      setTimeout(() => {
-        setIsAnimating(false);
-        console.log('✅ Animación de tab completada');
-      }, 800);
-    }
-  }, [currentTab, isAnimating]);
-
-  // Manejo del scroll
-  const handleScroll = useCallback(() => {
-    if (isAnimating || !sectionRef.current) return;
-    
-    const rect = sectionRef.current.getBoundingClientRect();
-    const scrollY = window.pageYOffset;
-    const sectionTop = scrollY + rect.top;
-    const relativeScroll = Math.max(0, scrollY - sectionTop);
-    const scrollPercent = Math.min(relativeScroll / (window.innerHeight * 1.5), 1);
-    
-    // Determinar qué tab debe estar activo basado en scroll
-    let newTab = 1;
-    
-    if (scrollPercent < scrollThresholds[2].min) {
-      newTab = 1;
-    } else if (scrollPercent >= scrollThresholds[2].min && scrollPercent < scrollThresholds[3].min) {
-      newTab = 2;
-    } else if (scrollPercent >= scrollThresholds[3].min) {
-      newTab = 3;
-    }
-    
-    // Cambiar tab si es necesario
-    if (newTab !== currentTab) {
-      console.log(`📜 Scroll activó tab ${newTab} (${Math.round(scrollPercent * 100)}%)`);
-      activateTab(newTab, true);
-    }
-  }, [currentTab, isAnimating, activateTab, scrollThresholds]);
-
-  // Click en tabs
-  const handleTabClick = useCallback((tabNumber: number) => {
-    activateTab(tabNumber, true);
-    
-    // Scroll suave a la posición correspondiente
-    if (!sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    const sectionTop = window.pageYOffset + rect.top;
-    const targetPercent = (tabNumber - 1) * 0.33 + 0.1;
-    const targetScroll = sectionTop + (targetPercent * window.innerHeight * 1.5);
-    window.scrollTo({
-      top: targetScroll,
-      behavior: 'smooth'
-    });
-  }, [activateTab]);
-
-  // Load Lottie animation data
+  // Cargar animación Lottie
   useEffect(() => {
     fetch('/arkham-lottie.json')
       .then(response => response.json())
@@ -98,616 +25,316 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
       .catch(error => console.error('Error loading Lottie animation:', error));
   }, []);
 
-  // Configuración inicial y eventos
-  useEffect(() => {
-    if (containerRef.current && sectionRef.current) {
-      scrollHeightRef.current = window.innerHeight * 1.5;
+  // Simple tab click handler - NO SCROLL, solo cambio de estado
+  const handleTabClick = useCallback((tabNumber: number) => {
+    setCurrentTab(tabNumber);
+    // Reset Lottie si cambiamos desde tab 3
+    if (tabNumber !== 3) {
+      setShowLottie(false);
     }
-    
-    // Optimized scroll handler for 60fps performance
-    let ticking = false;
-    const scrollListener = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    
-    window.addEventListener('scroll', scrollListener);
-    
-    // Controles de teclado para testing
-    const keyListener = (e: KeyboardEvent) => {
-      if (e.key >= '1' && e.key <= '3') {
-        e.preventDefault();
-        activateTab(parseInt(e.key), true);
-      }
-    };
-    
-    document.addEventListener('keydown', keyListener);
-    
-    return () => {
-      window.removeEventListener('scroll', scrollListener);
-      document.removeEventListener('keydown', keyListener);
-    };
-  }, [handleScroll, activateTab]);
+  }, []);
 
-  // Datos de los tabs - basados en el original
+  // Manejar el sticky behavior y la 4ta capa
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+    
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      
+      const rect = sectionRef.current.getBoundingClientRect();
+      const scrollY = window.scrollY;
+      
+      // Si estamos en tab 3 y no hemos mostrado Lottie
+      if (currentTab === 3 && !showLottie) {
+        // Activar Lottie con un pequeño scroll adicional
+        if (rect.top <= -100) {
+          setShowLottie(true);
+        }
+      }
+      
+      // Desactivar sticky cuando hayamos scrolleado suficiente para ver la 4ta capa
+      if (showLottie && rect.top <= -200) {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          setIsSticky(false);
+        }, 800); // Esperar a que termine la animación
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [currentTab, showLottie]);
+
+  // Datos de los tabs
   const tabsData = [
     {
       id: 1,
-      title: 'DATA PLATFORM',
-      content: 'A Data Lakehouse built for scale. Our platform ensures full data governance and lineage across your operations.'
+      title: messages.arkham.tabs.dataPlatform.title,
+      content: messages.arkham.tabs.dataPlatform.content
     },
     {
       id: 2,
-      title: 'AI PLATFORM',
-      content: 'From Generative AI to multiple classes of Machine Learning Models, Arkham is AI tailored to your operations.'
+      title: messages.arkham.tabs.aiPlatform.title,
+      content: messages.arkham.tabs.aiPlatform.content
     },
     {
       id: 3,
-      title: 'AI-POWERED APPLICATIONS',
-      content: 'Gain intelligence, control and solve your most complex challenges with your Data and AI tailored to your operations.'
+      title: messages.arkham.tabs.aiApplications.title,
+      content: messages.arkham.tabs.aiApplications.content
     }
   ];
 
+  // Variantes de animación para las capas (caída desde abajo)
+  const layerVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 100,
+      scale: 0.95
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        duration: 0.8
+      }
+    }
+  };
+
   return (
-    <div className={`arkham-scroll-container ${className}`} ref={containerRef}>
+    <div className="arkham-wrapper" style={{ minHeight: '200vh' }}>
       <section 
         ref={sectionRef}
-        className={`arkham-tabs-section scroll-state-${currentTab}`}
+        className={`arkham-section ${className}`}
+        style={{
+          position: isSticky ? 'sticky' : 'relative',
+          top: isSticky ? '0' : 'auto',
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'linear-gradient(to bottom, #ffffff, #f9fafb)',
+          zIndex: 10,
+          padding: '2rem'
+        }}
       >
-        <div className="isometric-row">
-          {/* LEFT COLUMN: HEADLINE AND TABS */}
-          <div className="box-headline-isometric">
-            <div className="container-headline">
-              {/* MAIN TITLE */}
-              <motion.h2 
-                className="arkham-title"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="line">
-                  <span className="line-text">Arkham</span>
-                </div>
-              </motion.h2>
-              
-              {/* SUBTITLE */}
-              <motion.p 
-                className="arkham-subtitle"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                The Data & AI Platform powering your company&apos;s future.
-              </motion.p>
-              
-              {/* CTA BUTTON */}
-              <motion.a 
-                href="/contact" 
-                className="arkham-cta-button"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <div className="btn-content">
-                  <div className="text-block">Book a demo</div>
-                  <svg 
-                    className="arrow-icon" 
-                    width="16" 
-                    height="16" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor"
-                  >
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12,8 16,12 12,16"/>
-                  </svg>
-                </div>
-              </motion.a>
-            </div>
-
-            {/* DESKTOP TABS CONTAINER */}
-            <motion.div 
-              className="container-vertical-tab desktop"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+        <div className="arkham-container" style={{
+          maxWidth: '1200px',
+          width: '100%',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '4rem',
+          alignItems: 'center'
+        }}>
+          
+          {/* LEFT COLUMN: Content and Tabs */}
+          <div className="arkham-left">
+            {/* Title Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-              {tabsData.map((tab, index) => (
-                <div 
-                  key={tab.id}
-                  className={`scroll-tab scroll-tab-${tab.id} ${currentTab === tab.id ? 'active' : ''} ${index === 0 ? 'box-top-bottom-line' : 'box-bottom-line'}`}
-                  onClick={() => handleTabClick(tab.id)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="arkham-tab-heading">
-                    <p className="tagline">{tab.title}</p>
-                    <svg 
-                      className={`arrow-right ${currentTab === tab.id ? 'hidden' : ''}`}
-                      width="16" 
-                      height="16" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor"
-                    >
-                      <polyline points="9,18 15,12 9,6"/>
-                    </svg>
-                  </div>
-                  <motion.p 
-                    className="tab-content"
-                    animate={{
-                      maxHeight: currentTab === tab.id ? '70px' : '0px',
-                      opacity: currentTab === tab.id ? 1 : 0,
-                      paddingBottom: currentTab === tab.id ? '20px' : '0px'
-                    }}
-                    transition={{ 
-                      duration: 0.6, 
-                      ease: [0.25, 0.46, 0.45, 0.94]
-                    }}
-                  >
-                    {tab.content}
-                  </motion.p>
-                </div>
-              ))}
+              <h2 className="text-5xl font-light text-gray-900 mb-4">
+                {messages.arkham.title}
+              </h2>
+              <p className="text-xl text-gray-600 mb-8">
+                {messages.arkham.subtitle}
+              </p>
+              <button className="inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors mb-12">
+                {messages.arkham.bookDemo}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </motion.div>
+
+            {/* Tabs */}
+            <div className="arkham-tabs space-y-0">
+              {tabsData.map((tab, index) => (
+                <motion.div
+                  key={tab.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + index * 0.1 }}
+                  className={`tab-item border-l-2 ${
+                    currentTab === tab.id 
+                      ? 'border-gray-900 bg-gray-50' 
+                      : 'border-gray-200 hover:border-gray-400'
+                  } transition-all cursor-pointer`}
+                  onClick={() => handleTabClick(tab.id)}
+                  style={{
+                    padding: '1.5rem',
+                    marginBottom: index < tabsData.length - 1 ? '1rem' : 0
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className={`text-sm font-semibold tracking-wider ${
+                      currentTab === tab.id ? 'text-gray-900' : 'text-gray-500'
+                    }`}>
+                      {tab.title}
+                    </h3>
+                    {currentTab !== tab.id && (
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </div>
+                  
+                  <AnimatePresence>
+                    {currentTab === tab.id && (
+                      <motion.p
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-gray-600 text-sm leading-relaxed overflow-hidden"
+                      >
+                        {tab.content}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ))}
+            </div>
           </div>
 
-          {/* RIGHT COLUMN: ISOMETRIC VISUALIZATION */}
-          <div className="box-isometric">
-            <motion.div 
-              className="levels-wrapper"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              {/* LEVEL 1: BASE LAYER */}
-              <motion.img 
-                src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81fa191298451da48f_Tapa1.png"
-                alt="Data Platform Level"
-                className="level first-level"
-                initial={{ opacity: 1 }}
-                animate={{
-                  opacity: 1,
-                  transform: 'translate(0px, 0px)'
-                }}
-                transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-              />
+          {/* RIGHT COLUMN: Isometric Layers */}
+          <div className="arkham-right relative" style={{ height: '500px' }}>
+            <div className="layers-container relative w-full h-full flex items-center justify-center">
               
-              {/* LEVEL 2: MIDDLE LAYER */}
-              <motion.img 
-                src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa2.png"
-                alt="AI Platform Level"
-                className="level float-level"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{
-                  opacity: currentTab >= 2 ? 1 : 0,
-                  y: currentTab >= 2 ? -60 : 20,
-                  x: currentTab >= 2 ? 20 : 0,
+              {/* Layer 1 - Base (Data Platform) */}
+              <motion.div
+                className="layer absolute"
+                initial="hidden"
+                animate={currentTab >= 1 ? "visible" : "hidden"}
+                variants={layerVariants}
+                style={{
+                  zIndex: 1,
+                  transform: 'translateZ(0)'
                 }}
-                transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
-              />
-              
-              {/* LEVEL 3: TOP LAYER */}
-              <motion.img 
-                src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81149f2caecbc44ebe_Tapa3.png"
-                alt="Applications Level"
-                className="level float-level"
-                initial={{ opacity: 0, y: 40 }}
-                animate={{
-                  opacity: currentTab >= 3 ? 1 : 0,
-                  y: currentTab >= 3 ? -120 : 40,
-                  x: currentTab >= 3 ? 40 : 0,
-                }}
-                transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
-              />
-              
-              {/* LEVEL 4: LOTTIE ANIMATION */}
-              <motion.div 
-                className="level float-level lottie-animation"
-                initial={{ opacity: 0, y: 60 }}
-                animate={{
-                  opacity: currentTab >= 3 ? 1 : 0,
-                  y: currentTab >= 3 ? -180 : 60,
-                  x: currentTab >= 3 ? 60 : 0,
-                }}
-                transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
               >
-                {lottieData ? (
-                  <Lottie 
-                    animationData={lottieData}
-                    loop={true}
-                    autoplay={currentTab >= 3}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      maxWidth: '250px',
-                      maxHeight: '250px',
-                      filter: currentTab >= 3 ? 'drop-shadow(0 0 20px rgba(139, 92, 246, 0.5))' : 'none',
-                      transition: 'filter 0.8s ease'
-                    }}
-                  />
-                ) : (
-                  <div className="lottie-loading">
-                    Loading...
-                  </div>
-                )}
+                <img
+                  src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81fa191298451da48f_Tapa1.png"
+                  alt="Data Platform"
+                  className="w-full h-auto max-w-sm"
+                  style={{
+                    filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.1))'
+                  }}
+                />
               </motion.div>
-            </motion.div>
+
+              {/* Layer 2 - AI Platform */}
+              <motion.div
+                className="layer absolute"
+                initial="hidden"
+                animate={currentTab >= 2 ? "visible" : "hidden"}
+                variants={layerVariants}
+                style={{
+                  zIndex: 2,
+                  transform: currentTab >= 2 
+                    ? 'translate3d(30px, -40px, 0)' 
+                    : 'translate3d(30px, 100px, 0)'
+                }}
+              >
+                <img
+                  src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa2.png"
+                  alt="AI Platform"
+                  className="w-full h-auto max-w-sm"
+                  style={{
+                    filter: 'drop-shadow(0 15px 40px rgba(0,0,0,0.15))'
+                  }}
+                />
+              </motion.div>
+
+              {/* Layer 3 - Applications */}
+              <motion.div
+                className="layer absolute"
+                initial="hidden"
+                animate={currentTab >= 3 ? "visible" : "hidden"}
+                variants={layerVariants}
+                style={{
+                  zIndex: 3,
+                  transform: currentTab >= 3 
+                    ? 'translate3d(60px, -80px, 0)' 
+                    : 'translate3d(60px, 100px, 0)'
+                }}
+              >
+                <img
+                  src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81149f2caecbc44ebe_Tapa3.png"
+                  alt="AI Applications"
+                  className="w-full h-auto max-w-sm"
+                  style={{
+                    filter: 'drop-shadow(0 20px 50px rgba(0,0,0,0.2))'
+                  }}
+                />
+              </motion.div>
+
+              {/* Layer 4 - Lottie Animation (solo con scroll después de tab 3) */}
+              <AnimatePresence>
+                {showLottie && lottieData && (
+                  <motion.div
+                    className="layer absolute"
+                    initial={{ opacity: 0, y: 100, scale: 0.8 }}
+                    animate={{ 
+                      opacity: 1, 
+                      y: 0, 
+                      scale: 1,
+                      x: 90,
+                      translateY: -120
+                    }}
+                    exit={{ opacity: 0, y: 50, scale: 0.9 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 80,
+                      damping: 15,
+                      duration: 1
+                    }}
+                    style={{
+                      zIndex: 4,
+                      filter: 'drop-shadow(0 25px 60px rgba(139, 92, 246, 0.3))'
+                    }}
+                  >
+                    <Lottie
+                      animationData={lottieData}
+                      loop={true}
+                      autoplay={true}
+                      style={{
+                        width: '280px',
+                        height: '280px'
+                      }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
+
+        <style jsx>{`
+          @media (max-width: 768px) {
+            .arkham-container {
+              grid-template-columns: 1fr !important;
+              gap: 2rem !important;
+            }
+            
+            .arkham-right {
+              order: -1;
+              height: 300px !important;
+            }
+            
+            .layer img {
+              max-width: 250px !important;
+            }
+          }
+        `}</style>
       </section>
-      
-      <style jsx>{`
-        .arkham-scroll-container {
-          height: 200vh;
-          position: relative;
-        }
-        
-        .arkham-tabs-section {
-          position: sticky;
-          top: 0;
-          margin: 0 auto;
-          max-width: 857px;
-          width: 857px;
-          max-height: 1025.91px;
-          height: 100vh;
-          padding: 60px 24px;
-          background: #fff;
-          overflow: hidden;
-          border-radius: 8px;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-          transition: box-shadow 0.3s ease;
-        }
-        
-        .arkham-tabs-section.scroll-state-2 {
-          box-shadow: 0 25px 70px rgba(0,0,0,0.2);
-        }
-        
-        .arkham-tabs-section.scroll-state-3 {
-          box-shadow: 0 30px 80px rgba(0,0,0,0.25);
-        }
-        
-        .isometric-row {
-          display: flex;
-          gap: 40px;
-          height: 100%;
-          align-items: flex-start;
-        }
-        
-        .box-headline-isometric {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 32px;
-        }
-        
-        .container-headline {
-          margin-bottom: 24px;
-        }
-        
-        .arkham-title {
-          font-size: 4rem;
-          font-weight: 300;
-          line-height: 1.1;
-          margin-bottom: 16px;
-          color: #111827;
-          font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-          letter-spacing: 0.025em;
-        }
-        
-        .line {
-          display: block;
-          text-align: left;
-          width: 100%;
-        }
-        
-        .line-text {
-          display: inline-block;
-        }
-        
-        .arkham-subtitle {
-          font-size: 1.25rem;
-          color: #6b7280;
-          margin-bottom: 24px;
-          line-height: 1.4;
-          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-        }
-        
-        .arkham-cta-button {
-          display: inline-flex;
-          align-items: center;
-          padding: 12px 24px;
-          background: #111827;
-          border: 1px solid #111827;
-          border-radius: 0.5rem;
-          text-decoration: none;
-          color: #ffffff;
-          font-weight: 500;
-          transition: all 0.2s ease;
-          margin-top: 16px;
-        }
-        
-        .arkham-cta-button:hover {
-          background: #1f2937;
-          color: #fff;
-          transform: translateY(-1px);
-          box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        
-        .btn-content {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        
-        .arrow-icon {
-          width: 16px;
-          height: 16px;
-        }
-        
-        .container-vertical-tab.desktop {
-          display: flex;
-          flex-direction: column;
-          gap: 0;
-          border-left: 1px solid #e5e7eb;
-          padding-left: 24px;
-        }
-        
-        .scroll-tab {
-          border-bottom: 1px solid #e5e7eb;
-          padding: 20px 0;
-          cursor: pointer;
-          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          position: relative;
-          opacity: 0.7;
-        }
-        
-        .scroll-tab.active {
-          opacity: 1;
-          background: linear-gradient(90deg, #f9fafb 0%, transparent 100%);
-          padding-left: 16px;
-          margin-left: -16px;
-        }
-        
-        .box-top-bottom-line {
-          border-top: 1px solid #e5e7eb;
-        }
-        
-        .scroll-tab:hover {
-          background-color: #f9fafb;
-        }
-        
-        .scroll-tab.active .tagline {
-          color: #111827 !important;
-          font-weight: 600;
-        }
-        
-        .arkham-tab-heading {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 12px;
-        }
-        
-        .tagline {
-          font-size: 0.875rem;
-          font-weight: 500;
-          letter-spacing: 0.05em;
-          text-transform: uppercase;
-          color: #6b7280;
-          margin: 0;
-          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-        }
-        
-        .scroll-tab.active .tagline {
-          transform: translateX(8px);
-        }
-        
-        .scroll-tab:hover .tagline {
-          color: #374151;
-        }
-        
-        .arrow-right {
-          width: 16px;
-          height: 16px;
-          opacity: 1;
-          transition: opacity 0.3s ease, transform 0.3s ease;
-          stroke: #9ca3af;
-        }
-        
-        .arrow-right.hidden {
-          opacity: 0;
-        }
-        
-        .scroll-tab:hover .arrow-right {
-          transform: translateX(4px);
-          stroke: #6b7280;
-        }
-        
-        .tab-content {
-          font-size: 0.95rem;
-          color: #6b7280;
-          line-height: 1.6;
-          margin: 0;
-          overflow: hidden;
-          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-        }
-        
-        .box-isometric {
-          flex: 1;
-          position: relative;
-          height: 500px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .levels-wrapper {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          max-width: 400px;
-          max-height: 400px;
-          opacity: 1;
-        }
-        
-        .level {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
-        
-        .level.first-level {
-          z-index: 1;
-          opacity: 1 !important;
-        }
-        
-        .level.float-level {
-          z-index: 2;
-          filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
-        }
-        
-        .lottie-animation {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .lottie-loading {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 100%;
-          color: #6b7280;
-          font-size: 14px;
-          background: rgba(107, 114, 128, 0.05);
-          border-radius: 0.5rem;
-          padding: 20px;
-          font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-        }
-        
-        @media (max-width: 1024px) {
-          .arkham-tabs-section {
-            max-width: 857px;
-            width: 857px;
-            padding: 40px 24px;
-          }
-          
-          .arkham-title {
-            font-size: 3.5rem;
-          }
-        }
-        
-        @media (max-width: 768px) {
-          .arkham-scroll-container {
-            height: 150vh;
-          }
-          
-          .arkham-tabs-section {
-            position: relative;
-            top: 0;
-            height: auto;
-            max-height: none;
-            padding: 24px 16px;
-            box-shadow: none;
-            border-radius: 0;
-          }
-          
-          .isometric-row {
-            flex-direction: column;
-            gap: 24px;
-          }
-          
-          .arkham-title {
-            font-size: 2.5rem;
-            text-align: center;
-          }
-          
-          .arkham-subtitle {
-            font-size: 1.125rem;
-            text-align: center;
-          }
-          
-          .container-headline {
-            text-align: center;
-            margin-bottom: 32px;
-          }
-          
-          .arkham-cta-button {
-            margin: 16px auto 0 auto;
-          }
-          
-          .container-vertical-tab.desktop {
-            border-left: none;
-            padding-left: 0;
-            border-top: 1px solid #e5e7eb;
-            padding-top: 24px;
-            margin-top: 24px;
-          }
-          
-          .scroll-tab {
-            padding: 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #e5e7eb;
-          }
-          
-          .box-top-bottom-line {
-            border-top: none;
-          }
-          
-          .box-isometric {
-            height: 250px;
-            order: -1;
-          }
-          
-          .levels-wrapper {
-            max-width: 300px;
-            max-height: 250px;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          .arkham-scroll-container {
-            height: 120vh;
-          }
-          
-          .arkham-tabs-section {
-            padding: 16px 12px;
-          }
-          
-          .arkham-title {
-            font-size: 2rem;
-          }
-          
-          .arkham-subtitle {
-            font-size: 1rem;
-          }
-          
-          .box-isometric {
-            height: 200px;
-          }
-          
-          .levels-wrapper {
-            max-width: 250px;
-            max-height: 200px;
-          }
-        }
-      `}</style>
     </div>
   );
 }
