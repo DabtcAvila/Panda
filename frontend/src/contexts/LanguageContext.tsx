@@ -57,6 +57,25 @@ interface Messages {
     };
     learnMore: string;
   };
+  arkham: {
+    title: string;
+    subtitle: string;
+    bookDemo: string;
+    tabs: {
+      dataPlatform: {
+        title: string;
+        content: string;
+      };
+      aiPlatform: {
+        title: string;
+        content: string;
+      };
+      aiApplications: {
+        title: string;
+        content: string;
+      };
+    };
+  };
   cta: {
     title: string;
     subtitle: string;

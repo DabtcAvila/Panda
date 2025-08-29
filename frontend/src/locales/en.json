@@ -67,6 +67,25 @@
     "subtitle": "Join leading companies that trust our technology",
     "button": "Schedule Consultation"
   },
+  "arkham": {
+    "title": "Arkham",
+    "subtitle": "The Data & AI Platform powering your company's future.",
+    "bookDemo": "Book a demo",
+    "tabs": {
+      "dataPlatform": {
+        "title": "DATA PLATFORM",
+        "content": "A Data Lakehouse built for scale. Our platform ensures full data governance and lineage across your operations."
+      },
+      "aiPlatform": {
+        "title": "AI PLATFORM",
+        "content": "From Generative AI to multiple classes of Machine Learning Models, Arkham is AI tailored to your operations."
+      },
+      "aiApplications": {
+        "title": "AI-POWERED APPLICATIONS",
+        "content": "Gain intelligence, control and solve your most complex challenges with your Data and AI tailored to your operations."
+      }
+    }
+  },
   "footer": {
     "company": "Panda Technologies",
     "rights": "© 2024 Panda Technologies. All rights reserved.",

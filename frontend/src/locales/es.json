@@ -67,6 +67,25 @@
     "subtitle": "Únete a las empresas líderes que confían en nuestra tecnología",
     "button": "Programar Consulta"
   },
+  "arkham": {
+    "title": "Arkham",
+    "subtitle": "La Plataforma de Datos e IA que impulsa el futuro de tu empresa.",
+    "bookDemo": "Solicitar demo",
+    "tabs": {
+      "dataPlatform": {
+        "title": "PLATAFORMA DE DATOS",
+        "content": "Consolida todos los datos de tu empresa en un Data Lakehouse dedicado a tu operación. Nuestros conectores garantizan calidad, linaje y gobernanza de datos en cuestión de minutos."
+      },
+      "aiPlatform": {
+        "title": "PLATAFORMA DE IA",
+        "content": "Desde IA Generativo hasta múltiples clases de modelos de Machine Learning, Arkham es IA adaptado a tus operaciones."
+      },
+      "aiApplications": {
+        "title": "APLICATIVOS INTELIGENTES",
+        "content": "Accede fácilmente a tus datos con los mejores modelos de Machine Learning y IA Generativa, adaptados a tu operación para ganar control y velocidad en tus operaciones."
+      }
+    }
+  },
   "footer": {
     "company": "Panda Technologies",
     "rights": "© 2024 Panda Technologies. Todos los derechos reservados.",
