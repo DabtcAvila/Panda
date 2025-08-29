@@ -22,9 +22,9 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
   
   // Configuración de umbrales de scroll
   const scrollThresholds = useMemo(() => ({
-    1: { min: 0, max: 0.35 },
-    2: { min: 0.32, max: 0.68 },
-    3: { min: 0.65, max: 1.0 }
+    1: { min: 0, max: 0.33 },
+    2: { min: 0.33, max: 0.66 },
+    3: { min: 0.66, max: 1.0 }
   }), []);
 
   // Función para activar tab
@@ -38,6 +38,7 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
     
     if (withAnimation) {
       setIsAnimating(true);
+      // Optimized timing for 60fps
       setTimeout(() => {
         setIsAnimating(false);
         console.log('✅ Animación de tab completada');
@@ -47,17 +48,20 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
 
   // Manejo del scroll
   const handleScroll = useCallback(() => {
-    if (isAnimating) return;
+    if (isAnimating || !sectionRef.current) return;
     
+    const rect = sectionRef.current.getBoundingClientRect();
     const scrollY = window.pageYOffset;
-    const scrollPercent = Math.min(scrollY / scrollHeightRef.current, 1);
+    const sectionTop = scrollY + rect.top;
+    const relativeScroll = Math.max(0, scrollY - sectionTop);
+    const scrollPercent = Math.min(relativeScroll / (window.innerHeight * 1.5), 1);
     
-    // Determinar qué tab debe estar activo
-    let newTab = currentTab;
+    // Determinar qué tab debe estar activo basado en scroll
+    let newTab = 1;
     
-    if (scrollPercent <= scrollThresholds[1].max) {
+    if (scrollPercent < scrollThresholds[2].min) {
       newTab = 1;
-    } else if (scrollPercent >= scrollThresholds[2].min && scrollPercent <= scrollThresholds[2].max) {
+    } else if (scrollPercent >= scrollThresholds[2].min && scrollPercent < scrollThresholds[3].min) {
       newTab = 2;
     } else if (scrollPercent >= scrollThresholds[3].min) {
       newTab = 3;
@@ -75,8 +79,11 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
     activateTab(tabNumber, true);
     
     // Scroll suave a la posición correspondiente
-    const targetPercent = (tabNumber - 1) * 0.33 + 0.16;
-    const targetScroll = targetPercent * scrollHeightRef.current;
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const sectionTop = window.pageYOffset + rect.top;
+    const targetPercent = (tabNumber - 1) * 0.33 + 0.1;
+    const targetScroll = sectionTop + (targetPercent * window.innerHeight * 1.5);
     window.scrollTo({
       top: targetScroll,
       behavior: 'smooth'
@@ -93,10 +100,11 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
 
   // Configuración inicial y eventos
   useEffect(() => {
-    if (containerRef.current) {
-      scrollHeightRef.current = containerRef.current.scrollHeight - window.innerHeight;
+    if (containerRef.current && sectionRef.current) {
+      scrollHeightRef.current = window.innerHeight * 1.5;
     }
     
+    // Optimized scroll handler for 60fps performance
     let ticking = false;
     const scrollListener = () => {
       if (!ticking) {
@@ -241,8 +249,8 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                       paddingBottom: currentTab === tab.id ? '20px' : '0px'
                     }}
                     transition={{ 
-                      duration: 0.5, 
-                      ease: [0.25, 0.46, 0.45, 0.94] 
+                      duration: 0.6, 
+                      ease: [0.25, 0.46, 0.45, 0.94]
                     }}
                   >
                     {tab.content}
@@ -266,8 +274,9 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                 src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81fa191298451da48f_Tapa1.png"
                 alt="Data Platform Level"
                 className="level first-level"
+                initial={{ opacity: 1 }}
                 animate={{
-                  opacity: currentTab >= 1 ? 1 : 0,
+                  opacity: 1,
                   transform: 'translate(0px, 0px)'
                 }}
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -278,9 +287,10 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                 src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa2.png"
                 alt="AI Platform Level"
                 className="level float-level"
+                initial={{ opacity: 0, y: 20 }}
                 animate={{
                   opacity: currentTab >= 2 ? 1 : 0,
-                  y: currentTab >= 2 ? -60 : -100,
+                  y: currentTab >= 2 ? -60 : 20,
                   x: currentTab >= 2 ? 20 : 0,
                 }}
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
@@ -291,9 +301,10 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                 src="https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81149f2caecbc44ebe_Tapa3.png"
                 alt="Applications Level"
                 className="level float-level"
+                initial={{ opacity: 0, y: 40 }}
                 animate={{
                   opacity: currentTab >= 3 ? 1 : 0,
-                  y: currentTab >= 3 ? -120 : -100,
+                  y: currentTab >= 3 ? -120 : 40,
                   x: currentTab >= 3 ? 40 : 0,
                 }}
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
@@ -302,10 +313,11 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
               {/* LEVEL 4: LOTTIE ANIMATION */}
               <motion.div 
                 className="level float-level lottie-animation"
+                initial={{ opacity: 0, y: 60 }}
                 animate={{
                   opacity: currentTab >= 3 ? 1 : 0,
-                  y: currentTab >= 3 ? -120 : -100,
-                  x: currentTab >= 3 ? 40 : 0,
+                  y: currentTab >= 3 ? -180 : 60,
+                  x: currentTab >= 3 ? 60 : 0,
                 }}
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
               >
@@ -317,8 +329,10 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                     style={{
                       width: '100%',
                       height: '100%',
-                      maxWidth: '200px',
-                      maxHeight: '200px'
+                      maxWidth: '250px',
+                      maxHeight: '250px',
+                      filter: currentTab >= 3 ? 'drop-shadow(0 0 20px rgba(139, 92, 246, 0.5))' : 'none',
+                      transition: 'filter 0.8s ease'
                     }}
                   />
                 ) : (
@@ -334,23 +348,32 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
       
       <style jsx>{`
         .arkham-scroll-container {
-          height: 300vh;
+          height: 200vh;
           position: relative;
         }
         
         .arkham-tabs-section {
           position: sticky;
-          top: 50px;
+          top: 0;
           margin: 0 auto;
           max-width: 857px;
           width: 857px;
           max-height: 1025.91px;
-          height: 1025.91px;
+          height: 100vh;
           padding: 60px 24px;
           background: #fff;
           overflow: hidden;
           border-radius: 8px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+          transition: box-shadow 0.3s ease;
+        }
+        
+        .arkham-tabs-section.scroll-state-2 {
+          box-shadow: 0 25px 70px rgba(0,0,0,0.2);
+        }
+        
+        .arkham-tabs-section.scroll-state-3 {
+          box-shadow: 0 30px 80px rgba(0,0,0,0.25);
         }
         
         .isometric-row {
@@ -443,8 +466,16 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
           border-bottom: 1px solid #e5e7eb;
           padding: 20px 0;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
           position: relative;
+          opacity: 0.7;
+        }
+        
+        .scroll-tab.active {
+          opacity: 1;
+          background: linear-gradient(90deg, #f9fafb 0%, transparent 100%);
+          padding-left: 16px;
+          margin-left: -16px;
         }
         
         .box-top-bottom-line {
@@ -474,8 +505,12 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
           text-transform: uppercase;
           color: #6b7280;
           margin: 0;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
           font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+        
+        .scroll-tab.active .tagline {
+          transform: translateX(8px);
         }
         
         .scroll-tab:hover .tagline {
@@ -537,10 +572,12 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
         
         .level.first-level {
           z-index: 1;
+          opacity: 1 !important;
         }
         
         .level.float-level {
           z-index: 2;
+          filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
         }
         
         .lottie-animation {
@@ -564,8 +601,8 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
         
         @media (max-width: 1024px) {
           .arkham-tabs-section {
-            max-width: 100%;
-            width: 100%;
+            max-width: 857px;
+            width: 857px;
             padding: 40px 24px;
           }
           
