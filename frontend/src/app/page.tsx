@@ -133,7 +133,223 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Framework Hero Section */}
+      <section className="relative min-h-[600px] lg:min-h-screen bg-white">
+        <div className="flex flex-col lg:flex-row h-full min-h-[600px] lg:min-h-screen">
+          {/* Left Column - Content */}
+          <div className="w-full lg:w-[40%] bg-white flex items-center justify-center px-8 py-16 lg:px-16 lg:py-0">
+            <div className="max-w-xl">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <h2 className="text-5xl lg:text-6xl leading-tight">
+                  <span className="font-light">The Foundry</span>
+                  <br />
+                  <span className="font-semibold">Ontology</span>
+                </h2>
+                <p className="mt-8 text-xl lg:text-2xl text-gray-600 leading-relaxed">
+                  Activate the power of your data and analytics.
+                </p>
+                <button className="mt-10 bg-gray-900 text-white px-10 py-4 rounded-lg font-medium text-base hover:bg-gray-800 transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5 flex items-center gap-2">
+                  Get Started with the Ontology
+                  <span className="text-lg">→</span>
+                </button>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Right Column - Visual Architecture */}
+          <div className="w-full lg:w-[60%] bg-gradient-to-br from-emerald-50 to-teal-50 p-8 lg:p-12 flex items-center justify-center">
+            <motion.div
+              className="w-full max-w-2xl"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              {/* Panel Header */}
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm font-medium text-gray-600">Foundry²</span>
+                </div>
+                <h3 className="text-2xl lg:text-3xl font-medium text-gray-900 flex items-center gap-2">
+                  Ontology Core
+                  <span className="text-2xl">→</span>
+                </h3>
+              </div>
+
+              {/* Layer System */}
+              <div className="space-y-8">
+                {/* Layer 1 - Semantic */}
+                <motion.div
+                  className="bg-white/80 backdrop-blur rounded-xl p-6 hover:shadow-lg transition-shadow duration-300"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  <div className="flex items-start gap-6">
+                    <span className="text-gray-300 text-sm font-mono">01</span>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-semibold mb-4">Semantic</h4>
+                      <div className="flex flex-col lg:flex-row gap-6">
+                        {/* Isometric Visual */}
+                        <div className="relative w-32 h-32">
+                          <svg viewBox="0 0 120 120" className="w-full h-full">
+                            {/* Nodes */}
+                            <circle cx="30" cy="40" r="8" fill="none" stroke="#10b981" strokeWidth="2"/>
+                            <circle cx="60" cy="20" r="8" fill="none" stroke="#10b981" strokeWidth="2"/>
+                            <circle cx="90" cy="35" r="8" fill="none" stroke="#10b981" strokeWidth="2"/>
+                            <circle cx="45" cy="70" r="8" fill="none" stroke="#10b981" strokeWidth="2"/>
+                            <circle cx="75" cy="65" r="8" fill="none" stroke="#10b981" strokeWidth="2"/>
+                            <circle cx="60" cy="95" r="8" fill="none" stroke="#10b981" strokeWidth="2"/>
+                            {/* Connections */}
+                            <line x1="30" y1="40" x2="60" y2="20" stroke="#10b981" strokeWidth="1" opacity="0.4"/>
+                            <line x1="60" y1="20" x2="90" y2="35" stroke="#10b981" strokeWidth="1" opacity="0.4"/>
+                            <line x1="30" y1="40" x2="45" y2="70" stroke="#10b981" strokeWidth="1" opacity="0.4"/>
+                            <line x1="45" y1="70" x2="75" y2="65" stroke="#10b981" strokeWidth="1" opacity="0.4"/>
+                            <line x1="75" y1="65" x2="90" y2="35" stroke="#10b981" strokeWidth="1" opacity="0.4"/>
+                            <line x1="45" y1="70" x2="60" y2="95" stroke="#10b981" strokeWidth="1" opacity="0.4"/>
+                            <line x1="75" y1="65" x2="60" y2="95" stroke="#10b981" strokeWidth="1" opacity="0.4"/>
+                          </svg>
+                        </div>
+                        {/* Features */}
+                        <ul className="flex-1 space-y-2 text-sm text-gray-600">
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
+                            Dynamic Objects & Links
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
+                            Multi-Modal Properties
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
+                            Ontology Primitives
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Layer 2 - Kinetic */}
+                <motion.div
+                  className="bg-white/80 backdrop-blur rounded-xl p-6 hover:shadow-lg transition-shadow duration-300"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  <div className="flex items-start gap-6">
+                    <span className="text-gray-300 text-sm font-mono">02</span>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-semibold mb-4">Kinetic</h4>
+                      <div className="flex flex-col lg:flex-row gap-6">
+                        {/* Isometric Visual */}
+                        <div className="relative w-32 h-32">
+                          <svg viewBox="0 0 120 120" className="w-full h-full">
+                            {/* Flow paths */}
+                            <path d="M 20 30 Q 40 20, 60 30 T 100 30" fill="none" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 2"/>
+                            <path d="M 20 60 Q 40 50, 60 60 T 100 60" fill="none" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 2"/>
+                            <path d="M 20 90 Q 40 80, 60 90 T 100 90" fill="none" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 2"/>
+                            {/* Nodes */}
+                            <rect x="15" y="25" width="10" height="10" fill="none" stroke="#3b82f6" strokeWidth="2"/>
+                            <rect x="55" y="25" width="10" height="10" fill="none" stroke="#3b82f6" strokeWidth="2"/>
+                            <rect x="95" y="25" width="10" height="10" fill="none" stroke="#3b82f6" strokeWidth="2"/>
+                            {/* Arrows */}
+                            <polygon points="48,30 52,28 52,32" fill="#3b82f6"/>
+                            <polygon points="88,30 92,28 92,32" fill="#3b82f6"/>
+                            <polygon points="48,60 52,58 52,62" fill="#3b82f6"/>
+                            <polygon points="88,60 92,58 92,62" fill="#3b82f6"/>
+                          </svg>
+                        </div>
+                        {/* Features */}
+                        <ul className="flex-1 space-y-2 text-sm text-gray-600">
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
+                            AI-Driven Actions & Functions
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
+                            Process Mining & Automation
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
+                            Action Orchestration
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
+                            Real-Time Monitoring
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Layer 3 - Dynamic */}
+                <motion.div
+                  className="bg-white/80 backdrop-blur rounded-xl p-6 hover:shadow-lg transition-shadow duration-300"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <div className="flex items-start gap-6">
+                    <span className="text-gray-300 text-sm font-mono">03</span>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-semibold mb-4">Dynamic</h4>
+                      <div className="flex flex-col lg:flex-row gap-6">
+                        {/* Isometric Visual */}
+                        <div className="relative w-32 h-32">
+                          <svg viewBox="0 0 120 120" className="w-full h-full">
+                            {/* Decision tree structure */}
+                            <circle cx="60" cy="20" r="6" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                            <circle cx="35" cy="50" r="6" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                            <circle cx="85" cy="50" r="6" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                            <circle cx="20" cy="80" r="6" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                            <circle cx="50" cy="80" r="6" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                            <circle cx="70" cy="80" r="6" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                            <circle cx="100" cy="80" r="6" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                            {/* Connections */}
+                            <line x1="60" y1="26" x2="35" y2="44" stroke="#8b5cf6" strokeWidth="1.5"/>
+                            <line x1="60" y1="26" x2="85" y2="44" stroke="#8b5cf6" strokeWidth="1.5"/>
+                            <line x1="35" y1="56" x2="20" y2="74" stroke="#8b5cf6" strokeWidth="1.5"/>
+                            <line x1="35" y1="56" x2="50" y2="74" stroke="#8b5cf6" strokeWidth="1.5"/>
+                            <line x1="85" y1="56" x2="70" y2="74" stroke="#8b5cf6" strokeWidth="1.5"/>
+                            <line x1="85" y1="56" x2="100" y2="74" stroke="#8b5cf6" strokeWidth="1.5"/>
+                          </svg>
+                        </div>
+                        {/* Features */}
+                        <ul className="flex-1 space-y-2 text-sm text-gray-600">
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-purple-500 rounded-full"></span>
+                            AI-Powered Decisions
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-purple-500 rounded-full"></span>
+                            Multi-Step Simulations
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-purple-500 rounded-full"></span>
+                            Decision Capture & Learning
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Capabilities Section */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
@@ -144,7 +360,7 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl font-mono font-light tracking-wider text-gray-900 sm:text-4xl">
-              {messages.services.title}
+              Capacidades Core
             </h2>
             <p className="mt-4 text-lg font-sans text-gray-600">
               {messages.services.subtitle}

@@ -40,7 +40,8 @@
       "Bash(taskkill:*)",
       "Bash(powershell:*)",
       "Bash(open:*)",
-      "Bash(docker:*)"
+      "Bash(docker:*)",
+      "Bash(npm run type-check:*)"
     ],
     "deny": []
   }

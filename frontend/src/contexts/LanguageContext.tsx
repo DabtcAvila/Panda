@@ -9,6 +9,7 @@ type Locale = 'es' | 'en';
 interface Messages {
   navbar: {
     company: string;
+    scheduleConsultation: string;
   };
   hero: {
     title: string;
