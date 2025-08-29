@@ -10,6 +10,41 @@
     "exploreButton": "Explorar Soluciones",
     "demoButton": "Solicitar Demo"
   },
+  "framework": {
+    "titleLine1": "La Fundición",
+    "titleLine2": "Ontológica",
+    "subtitle": "Activa el poder de tus datos y análisis.",
+    "ctaButton": "Comenzar con la Ontología",
+    "panelBrand": "Foundry²",
+    "panelTitle": "Núcleo Ontológico",
+    "layers": {
+      "semantic": {
+        "title": "Semántico",
+        "features": [
+          "Objetos y Enlaces Dinámicos",
+          "Propiedades Multi-Modales",
+          "Primitivos Ontológicos"
+        ]
+      },
+      "kinetic": {
+        "title": "Cinético",
+        "features": [
+          "Acciones y Funciones Impulsadas por IA",
+          "Minería de Procesos y Automatización",
+          "Orquestación de Acciones",
+          "Monitoreo en Tiempo Real"
+        ]
+      },
+      "dynamic": {
+        "title": "Dinámico",
+        "features": [
+          "Decisiones Potenciadas por IA",
+          "Simulaciones Multi-Paso",
+          "Captura y Aprendizaje de Decisiones"
+        ]
+      }
+    }
+  },
   "services": {
     "title": "Capacidades Core",
     "subtitle": "Tecnología avanzada diseñada para impulsar resultados empresariales tangibles",

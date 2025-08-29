@@ -146,15 +146,15 @@ export default function HomePage() {
                 transition={{ duration: 0.6 }}
               >
                 <h2 className="text-5xl lg:text-6xl leading-tight">
-                  <span className="font-light">The Foundry</span>
+                  <span className="font-light">{messages.framework.titleLine1}</span>
                   <br />
-                  <span className="font-semibold">Ontology</span>
+                  <span className="font-semibold">{messages.framework.titleLine2}</span>
                 </h2>
                 <p className="mt-8 text-xl lg:text-2xl text-gray-600 leading-relaxed">
-                  Activate the power of your data and analytics.
+                  {messages.framework.subtitle}
                 </p>
                 <button className="mt-10 bg-gray-900 text-white px-10 py-4 rounded-lg font-medium text-base hover:bg-gray-800 transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5 flex items-center gap-2">
-                  Get Started with the Ontology
+                  {messages.framework.ctaButton}
                   <span className="text-lg">→</span>
                 </button>
               </motion.div>
@@ -173,10 +173,10 @@ export default function HomePage() {
               {/* Panel Header */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-medium text-gray-600">Foundry²</span>
+                  <span className="text-sm font-medium text-gray-600">{messages.framework.panelBrand}</span>
                 </div>
                 <h3 className="text-2xl lg:text-3xl font-medium text-gray-900 flex items-center gap-2">
-                  Ontology Core
+                  {messages.framework.panelTitle}
                   <span className="text-2xl">→</span>
                 </h3>
               </div>
@@ -194,7 +194,7 @@ export default function HomePage() {
                   <div className="flex items-start gap-6">
                     <span className="text-gray-300 text-sm font-mono">01</span>
                     <div className="flex-1">
-                      <h4 className="text-xl font-semibold mb-4">Semantic</h4>
+                      <h4 className="text-xl font-semibold mb-4">{messages.framework.layers.semantic.title}</h4>
                       <div className="flex flex-col lg:flex-row gap-6">
                         {/* Isometric Visual */}
                         <div className="relative w-32 h-32">
@@ -218,18 +218,12 @@ export default function HomePage() {
                         </div>
                         {/* Features */}
                         <ul className="flex-1 space-y-2 text-sm text-gray-600">
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
-                            Dynamic Objects & Links
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
-                            Multi-Modal Properties
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
-                            Ontology Primitives
-                          </li>
+                          {messages.framework.layers.semantic.features.map((feature, index) => (
+                            <li key={index} className="flex items-center gap-2">
+                              <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
+                              {feature}
+                            </li>
+                          ))}
                         </ul>
                       </div>
                     </div>
@@ -247,7 +241,7 @@ export default function HomePage() {
                   <div className="flex items-start gap-6">
                     <span className="text-gray-300 text-sm font-mono">02</span>
                     <div className="flex-1">
-                      <h4 className="text-xl font-semibold mb-4">Kinetic</h4>
+                      <h4 className="text-xl font-semibold mb-4">{messages.framework.layers.kinetic.title}</h4>
                       <div className="flex flex-col lg:flex-row gap-6">
                         {/* Isometric Visual */}
                         <div className="relative w-32 h-32">
@@ -269,22 +263,12 @@ export default function HomePage() {
                         </div>
                         {/* Features */}
                         <ul className="flex-1 space-y-2 text-sm text-gray-600">
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
-                            AI-Driven Actions & Functions
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
-                            Process Mining & Automation
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
-                            Action Orchestration
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
-                            Real-Time Monitoring
-                          </li>
+                          {messages.framework.layers.kinetic.features.map((feature, index) => (
+                            <li key={index} className="flex items-center gap-2">
+                              <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
+                              {feature}
+                            </li>
+                          ))}
                         </ul>
                       </div>
                     </div>
@@ -302,7 +286,7 @@ export default function HomePage() {
                   <div className="flex items-start gap-6">
                     <span className="text-gray-300 text-sm font-mono">03</span>
                     <div className="flex-1">
-                      <h4 className="text-xl font-semibold mb-4">Dynamic</h4>
+                      <h4 className="text-xl font-semibold mb-4">{messages.framework.layers.dynamic.title}</h4>
                       <div className="flex flex-col lg:flex-row gap-6">
                         {/* Isometric Visual */}
                         <div className="relative w-32 h-32">
@@ -326,18 +310,12 @@ export default function HomePage() {
                         </div>
                         {/* Features */}
                         <ul className="flex-1 space-y-2 text-sm text-gray-600">
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-purple-500 rounded-full"></span>
-                            AI-Powered Decisions
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-purple-500 rounded-full"></span>
-                            Multi-Step Simulations
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-purple-500 rounded-full"></span>
-                            Decision Capture & Learning
-                          </li>
+                          {messages.framework.layers.dynamic.features.map((feature, index) => (
+                            <li key={index} className="flex items-center gap-2">
+                              <span className="w-1 h-1 bg-purple-500 rounded-full"></span>
+                              {feature}
+                            </li>
+                          ))}
                         </ul>
                       </div>
                     </div>

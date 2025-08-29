@@ -18,6 +18,28 @@ interface Messages {
     exploreButton: string;
     demoButton: string;
   };
+  framework: {
+    titleLine1: string;
+    titleLine2: string;
+    subtitle: string;
+    ctaButton: string;
+    panelBrand: string;
+    panelTitle: string;
+    layers: {
+      semantic: {
+        title: string;
+        features: string[];
+      };
+      kinetic: {
+        title: string;
+        features: string[];
+      };
+      dynamic: {
+        title: string;
+        features: string[];
+      };
+    };
+  };
   services: {
     title: string;
     subtitle: string;

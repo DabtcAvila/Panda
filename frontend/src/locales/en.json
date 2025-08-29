@@ -10,6 +10,41 @@
     "exploreButton": "Explore Solutions",
     "demoButton": "Request Demo"
   },
+  "framework": {
+    "titleLine1": "The Foundry",
+    "titleLine2": "Ontology",
+    "subtitle": "Activate the power of your data and analytics.",
+    "ctaButton": "Get Started with the Ontology",
+    "panelBrand": "Foundry²",
+    "panelTitle": "Ontology Core",
+    "layers": {
+      "semantic": {
+        "title": "Semantic",
+        "features": [
+          "Dynamic Objects & Links",
+          "Multi-Modal Properties",
+          "Ontology Primitives"
+        ]
+      },
+      "kinetic": {
+        "title": "Kinetic",
+        "features": [
+          "AI-Driven Actions & Functions",
+          "Process Mining & Automation",
+          "Action Orchestration",
+          "Real-Time Monitoring"
+        ]
+      },
+      "dynamic": {
+        "title": "Dynamic",
+        "features": [
+          "AI-Powered Decisions",
+          "Multi-Step Simulations",
+          "Decision Capture & Learning"
+        ]
+      }
+    }
+  },
   "services": {
     "title": "Core Capabilities",
     "subtitle": "Advanced technology designed to drive tangible business results",
