@@ -40,11 +40,12 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
     };
   }, []);
 
-  // Configuración de las capas
+  // Configuración de las capas con textos descriptivos
   const layers = [
     {
       id: 1,
-      title: "PLATAFORMA DE DATOS",
+      title: messages.arkham.tabs.dataPlatform.title,
+      content: messages.arkham.tabs.dataPlatform.content,
       image: "https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81fa191298451da48f_Tapa1.png",
       alt: "Data Platform",
       translateY: 0,
@@ -52,7 +53,8 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
     },
     {
       id: 2,
-      title: "PLATAFORMA DE IA",
+      title: messages.arkham.tabs.aiPlatform.title,
+      content: messages.arkham.tabs.aiPlatform.content,
       image: "https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa2.png",
       alt: "AI Platform",
       translateY: -40,
@@ -60,8 +62,9 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
     },
     {
       id: 3,
-      title: "APLICATIVOS INTELIGENTES",
-      image: "https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81149f2caecbc44ebe_Tapa3.png",
+      title: messages.arkham.tabs.aiApplications.title,
+      content: messages.arkham.tabs.aiApplications.content,
+      image: "https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa3.png",
       alt: "AI Applications",
       translateY: -80,
       zIndex: 3
@@ -155,48 +158,98 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
             </motion.button>
           </motion.div>
 
-          {/* Botones de selección de capas */}
-          <div className="space-y-4">
+          {/* Botones de selección de capas con expansión */}
+          <div className="space-y-0">
             {layers.map((layer, index) => (
-              <motion.button
+              <motion.div
                 key={layer.id}
-                onClick={() => handleLayerClick(layer.id)}
                 className={`
-                  w-full text-left p-4 border-l-4 transition-all duration-300
+                  border-l-2 transition-all cursor-pointer relative overflow-hidden
                   ${selectedLayer === layer.id 
-                    ? 'border-gray-900 bg-gray-100 shadow-md' 
-                    : 'border-gray-300 hover:border-gray-600 hover:bg-gray-50 hover:shadow-sm cursor-pointer'
+                    ? 'border-gray-900 bg-gray-50' 
+                    : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50/50'
                   }
                 `}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index, duration: 0.5 }}
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.98 }}
+                style={{
+                  marginBottom: index < layers.length - 1 ? '1rem' : 0,
+                  transform: selectedLayer === layer.id ? 'translateX(2px)' : 'translateX(0)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  boxShadow: selectedLayer === layer.id 
+                    ? 'inset 0 1px 3px rgba(0,0,0,0.05)' 
+                    : 'none'
+                }}
               >
-                <h3 className={`
-                  text-sm font-semibold tracking-wider transition-colors duration-300
-                  ${selectedLayer === layer.id ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}
-                `}>
-                  {layer.title}
-                </h3>
-              </motion.button>
+                {/* Background animation on select */}
+                {selectedLayer === layer.id && (
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-gray-50 to-transparent"
+                    initial={{ x: '-100%' }}
+                    animate={{ x: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    style={{ zIndex: -1 }}
+                  />
+                )}
+                
+                <motion.button
+                  onClick={() => handleLayerClick(layer.id)}
+                  className="w-full text-left p-6 relative z-10"
+                  whileHover={{ x: 2 }}
+                  whileTap={{ scale: 0.99 }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <motion.h3 
+                      className={`text-sm font-semibold tracking-wider transition-colors duration-300 ${
+                        selectedLayer === layer.id ? 'text-gray-900' : 'text-gray-500'
+                      }`}
+                      animate={{ 
+                        letterSpacing: selectedLayer === layer.id ? '0.05em' : '0.025em' 
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {layer.title}
+                    </motion.h3>
+                    
+                    <motion.div
+                      animate={{ 
+                        rotate: selectedLayer === layer.id ? 90 : 0,
+                        opacity: selectedLayer === layer.id ? 0 : 1
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </motion.div>
+                  </div>
+                </motion.button>
+                
+                {/* Contenido expandible con animación */}
+                <AnimatePresence>
+                  {selectedLayer === layer.id && (
+                    <motion.div
+                      key={`content-${layer.id}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ 
+                        duration: 0.35,
+                        ease: "easeInOut",
+                        opacity: { duration: 0.25 }
+                      }}
+                      className="overflow-hidden px-6 pb-6"
+                    >
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {layer.content}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             ))}
           </div>
-
-          {/* Indicador de estado */}
-          <motion.div 
-            className="mt-8 text-sm text-gray-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {selectedLayer ? (
-              <span>Mostrando: {layers.find(l => l.id === selectedLayer)?.title}</span>
-            ) : (
-              <span>Mostrando: Todas las capas</span>
-            )}
-          </motion.div>
         </div>
 
         {/* COLUMNA DERECHA: Visualización de Capas */}
