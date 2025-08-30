@@ -46,7 +46,11 @@
       "Bash(npm run build:*)",
       "Bash(claude status)",
       "Bash(npx eslint:*)",
-      "Bash(/dev/null)"
+      "Bash(/dev/null)",
+      "WebFetch(domain:cdn.prod.website-files.com)",
+      "Bash(npx next dev:*)",
+      "Bash(npm start)",
+      "Bash(npx tsc:*)"
     ],
     "deny": []
   }

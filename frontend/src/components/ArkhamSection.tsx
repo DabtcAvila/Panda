@@ -11,27 +11,21 @@ interface ArkhamSectionProps {
 export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
   const { messages } = useLanguage();
   
-  // Estado para controlar qué capa mostrar (null = todas, 1-3 = capa específica)
   const [selectedLayer, setSelectedLayer] = useState<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout>();
 
-  // Función para manejar clicks en los botones
   const handleLayerClick = (layerNumber: number) => {
-    // Limpiar timer anterior si existe
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
 
-    // Establecer la capa seleccionada
     setSelectedLayer(layerNumber);
 
-    // Configurar timer de 5 segundos para volver al estado default
     timerRef.current = setTimeout(() => {
       setSelectedLayer(null);
     }, 5000);
   };
 
-  // Limpiar timer al desmontar el componente
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -40,7 +34,6 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
     };
   }, []);
 
-  // Configuración de las capas con textos descriptivos
   const layers = [
     {
       id: 1,
@@ -48,7 +41,7 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
       content: messages.arkham.tabs.dataPlatform.content,
       image: "https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81fa191298451da48f_Tapa1.png",
       alt: "Data Platform",
-      translateY: 0,
+      translateY: 40,
       zIndex: 1
     },
     {
@@ -57,25 +50,24 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
       content: messages.arkham.tabs.aiPlatform.content,
       image: "https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa2.png",
       alt: "AI Platform",
-      translateY: -40,
+      translateY: 0,
       zIndex: 2
     },
     {
       id: 3,
       title: messages.arkham.tabs.aiApplications.title,
       content: messages.arkham.tabs.aiApplications.content,
-      image: "https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81e75b1845dbbd60ac_Tapa3.png",
+      image: "https://cdn.prod.website-files.com/68471fce29939e5703efec7f/68670c81fa191298451da491_Tapa3.png",
       alt: "AI Applications",
-      translateY: -80,
+      translateY: -40,
       zIndex: 3
     }
   ];
 
-  // Variantes de animación para las capas (de arriba hacia abajo)
   const layerVariants = {
     hidden: { 
       opacity: 0,
-      y: -100,  // Viene desde arriba
+      y: -100,
       scale: 0.9
     },
     visible: {
@@ -91,7 +83,7 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
     },
     exit: {
       opacity: 0,
-      y: -50,  // Sale hacia arriba
+      y: -50,
       scale: 0.95,
       transition: {
         duration: 0.3,
@@ -121,9 +113,7 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
         alignItems: 'center'
       }}>
         
-        {/* COLUMNA IZQUIERDA: Título y Botones */}
         <div className="arkham-left">
-          {/* Sección del título */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -158,7 +148,6 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
             </motion.button>
           </motion.div>
 
-          {/* Botones de selección de capas con expansión */}
           <div className="space-y-0">
             {layers.map((layer, index) => (
               <motion.div
@@ -182,7 +171,6 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                     : 'none'
                 }}
               >
-                {/* Background animation on select */}
                 {selectedLayer === layer.id && (
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-gray-50 to-transparent"
@@ -226,7 +214,6 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                   </div>
                 </motion.button>
                 
-                {/* Contenido expandible con animación */}
                 <AnimatePresence>
                   {selectedLayer === layer.id && (
                     <motion.div
@@ -252,7 +239,6 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
           </div>
         </div>
 
-        {/* COLUMNA DERECHA: Visualización de Capas */}
         <div className="arkham-right relative" style={{ 
           height: '500px',
           perspective: '1200px',
@@ -261,12 +247,12 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
           <div className="layers-container relative w-full h-full flex items-center justify-center">
             
             <AnimatePresence mode="sync">
-              {/* Renderizar capas de forma acumulativa */}
               {layers.map((layer, index) => {
-                // Determinar si esta capa debe mostrarse
-                const shouldShow = selectedLayer === null || layer.id <= selectedLayer;
+                const shouldShow = selectedLayer === null || layer.id <= (selectedLayer || 3);
                 
-                return shouldShow ? (
+                if (!shouldShow) return null;
+                
+                return (
                   <motion.div
                     key={layer.id}
                     className="absolute"
@@ -277,14 +263,13 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                     custom={index}
                     style={{
                       zIndex: layer.zIndex,
-                      transform: `translate3d(${index * 30}px, ${layer.translateY}px, ${index * 20}px)`
+                      transform: `translate3d(${index * 30}px, ${layer.translateY}px, ${index * 20}px)`,
+                      willChange: 'transform, opacity'
                     }}
                     transition={{ delay: index * 0.15 }}
                   >
-                    <motion.img
-                      src={layer.image}
-                      alt={layer.alt}
-                      className="w-full h-auto max-w-sm"
+                    <motion.div
+                      className="w-full h-auto max-w-sm relative"
                       style={{
                         filter: selectedLayer === layer.id 
                           ? 'drop-shadow(0 30px 60px rgba(0,0,0,0.25))' 
@@ -304,9 +289,15 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                         scale: 1.02,
                         filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.2))'
                       }}
-                    />
+                    >
+                      <img
+                        src={layer.image}
+                        alt={layer.alt}
+                        className="w-full h-auto max-w-sm"
+                      />
+                    </motion.div>
                   </motion.div>
-                ) : null;
+                );
               })}
             </AnimatePresence>
           </div>
@@ -319,7 +310,6 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
           -moz-osx-font-smoothing: grayscale;
         }
         
-        /* Estilos responsivos para tablet */
         @media (min-width: 768px) and (max-width: 1024px) {
           .arkham-container {
             gap: 3rem !important;
@@ -335,7 +325,6 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
           }
         }
         
-        /* Estilos responsivos para móvil */
         @media (max-width: 767px) {
           .arkham-container {
             grid-template-columns: 1fr !important;
@@ -365,7 +354,6 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
           }
         }
         
-        /* Optimización de rendimiento */
         @media (prefers-reduced-motion: reduce) {
           * {
             animation-duration: 0.01ms !important;
