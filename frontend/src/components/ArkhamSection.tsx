@@ -207,13 +207,15 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
         }}>
           <div className="layers-container relative w-full h-full flex items-center justify-center">
             
-            <AnimatePresence mode="wait">
-              {/* Mostrar todas las capas o solo la seleccionada */}
-              {selectedLayer === null ? (
-                // Estado default: Mostrar todas las capas apiladas
-                layers.map((layer, index) => (
+            <AnimatePresence mode="sync">
+              {/* Renderizar capas de forma acumulativa */}
+              {layers.map((layer, index) => {
+                // Determinar si esta capa debe mostrarse
+                const shouldShow = selectedLayer === null || layer.id <= selectedLayer;
+                
+                return shouldShow ? (
                   <motion.div
-                    key={`all-${layer.id}`}
+                    key={layer.id}
                     className="absolute"
                     initial="hidden"
                     animate="visible"
@@ -231,51 +233,28 @@ export default function ArkhamSection({ className = '' }: ArkhamSectionProps) {
                       alt={layer.alt}
                       className="w-full h-auto max-w-sm"
                       style={{
-                        filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))',
+                        filter: selectedLayer === layer.id 
+                          ? 'drop-shadow(0 30px 60px rgba(0,0,0,0.25))' 
+                          : 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))',
                         transition: 'filter 0.4s ease'
                       }}
+                      animate={selectedLayer === layer.id ? {
+                        scale: [1, 1.02, 1],
+                      } : {}}
+                      transition={selectedLayer === layer.id ? {
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut"
+                      } : { duration: 0.3 }}
                       whileHover={{ 
                         scale: 1.02,
                         filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.2))'
                       }}
-                      transition={{ duration: 0.3 }}
                     />
                   </motion.div>
-                ))
-              ) : (
-                // Estado con capa seleccionada: Mostrar solo una capa
-                <motion.div
-                  key={`single-${selectedLayer}`}
-                  className="absolute"
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={layerVariants}
-                  style={{
-                    zIndex: 10,
-                    transform: 'translate3d(0, 0, 0)'
-                  }}
-                >
-                  <motion.img
-                    src={layers[selectedLayer - 1].image}
-                    alt={layers[selectedLayer - 1].alt}
-                    className="w-full h-auto max-w-md"
-                    style={{
-                      filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.25))',
-                      transition: 'filter 0.4s ease'
-                    }}
-                    animate={{
-                      scale: [1, 1.02, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      ease: "easeInOut"
-                    }}
-                  />
-                </motion.div>
-              )}
+                ) : null;
+              })}
             </AnimatePresence>
           </div>
         </div>
